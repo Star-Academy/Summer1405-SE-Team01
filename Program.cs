@@ -1,23 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
+using System.Reflection;
 
 namespace BrowserHistory
 {
     class Program
     {
         private const int DefaultTopStatsCount = 3;
+        private static ResourceManager rm = new ResourceManager("mohaymen.Messages", Assembly.GetExecutingAssembly());
 
         static void Main(string[] args)
         {
-
-            var BackSearch = new Stack<string>();
-            var ForwardSearch = new Stack<string>();
-            var searchStats = new Dictionary<string, int>();
+            var history = new HistoryManager();
 
             while (true)
             {
-                Console.Write("> ");
+                Console.Write("> "); 
                 string input = Console.ReadLine()?.Trim() ?? "";
 
                 if (string.IsNullOrEmpty(input)) continue;
@@ -28,118 +27,88 @@ namespace BrowserHistory
 
                 switch (command)
                 {
-                    case "SEARCH":
-                        HandleSearch(argument, BackSearch, ForwardSearch, searchStats);
+                    case AppCommands.Search:
+                        if (string.IsNullOrWhiteSpace(argument))
+                        {
+                            Console.WriteLine(rm.GetString("ProvideSearchTerm"));
+                        }
+                        else
+                        {
+                            history.Search(argument);
+                            PrintCurrent(history);
+                        }
                         break;
 
-                    case "BACK":
-                        HandleBack(BackSearch, ForwardSearch);
+                    case AppCommands.Back:
+                        if (history.GoBack())
+                        {
+                            PrintCurrent(history);
+                        }
+                        else if (history.IsAtRoot)
+                        {
+                            Console.WriteLine(rm.GetString("CantUseBack"));
+                        }
+                        else
+                        {
+                            Console.WriteLine(rm.GetString("HistoryEmpty"));
+                        }
                         break;
 
-                    case "FORWARD":
-                        HandleForward(BackSearch, ForwardSearch);
+                    case AppCommands.Forward:
+                        if (history.GoForward())
+                        {
+                            PrintCurrent(history);
+                        }
+                        else
+                        {
+                            Console.WriteLine(rm.GetString("CannotGoForward"));
+                        }
                         break;
 
-                    case "CURRENT":
-                        PrintCurrent(BackSearch);
+                    case AppCommands.Current:
+                        PrintCurrent(history);
                         break;
 
-                    case "STATS":
-                        HandleStats(searchStats, DefaultTopStatsCount);
+                    case AppCommands.Stats:
+                        var stats = history.GetTopStats(DefaultTopStatsCount);
+                        if (!stats.Any())
+                        {
+                            Console.WriteLine(rm.GetString("NoHistory"));
+                        }
+                        else
+                        {
+                            foreach (var stat in stats)
+                            {
+                                Console.WriteLine($"{stat.Key}: {stat.Value}");
+                            }
+                        }
                         break;
 
-                    case "UNIQUE":
-                        HandleUnique(searchStats);
+                    case AppCommands.Unique:
+                        Console.WriteLine(history.GetUniqueCount());
                         break;
 
-                    case "EXIT":
+                    case AppCommands.Exit:
                         return;
 
                     default:
-                        Console.WriteLine("Unknown command.");
+                        Console.WriteLine(rm.GetString("UnknownCommand"));
                         break;
                 }
             }
         }
 
-        static void HandleSearch(string term, Stack<string> BackSearch, Stack<string> ForwardSearch, Dictionary<string, int> searchStats)
+        static void PrintCurrent(HistoryManager history)
         {
-            if (string.IsNullOrWhiteSpace(term))
+            var current = history.GetCurrent();
+            if (current != null)
             {
-                Console.WriteLine("Please provide a search term.");
-                return;
-            }
-
-            BackSearch.Push(term);
-            ForwardSearch.Clear();
-
-            searchStats[term] = searchStats.GetValueOrDefault(term, 0) + 1;
-
-            PrintCurrent(BackSearch);
-        }
-
-        static void HandleBack(Stack<string> BackSearch, Stack<string> ForwardSearch)
-        {
-            if (BackSearch.Count > 1)
-            {
-                ForwardSearch.Push(BackSearch.Pop());
-                PrintCurrent(BackSearch);
-            }
-            else if (BackSearch.Count == 1)
-            {
-                Console.WriteLine("You can't use back!");
+                var formatString = rm.GetString("CurrentFormat") ?? "current: {0}";
+                Console.WriteLine(string.Format(formatString, current));
             }
             else
             {
-                Console.WriteLine("History is empty.");
-            }
-        }
-
-        static void HandleForward(Stack<string> BackSearch, Stack<string> ForwardSearch)
-        {
-            if (ForwardSearch.Count > 0)
-            {
-                BackSearch.Push(ForwardSearch.Pop());
-                PrintCurrent(BackSearch);
-            }
-            else
-            {
-                Console.WriteLine("Cannot go forward.");
-            }
-        }
-
-        static void HandleStats(Dictionary<string, int> searchStats, int topCount = DefaultTopStatsCount)
-        {
-            if (searchStats.Count == 0)
-            {
-                Console.WriteLine("No search history available.");
-                return;
-            }
-
-            var topSearches = searchStats
-                .OrderByDescending(x => x.Value)
-                .Take(topCount);
-
-            foreach (var stat in topSearches)
-            {
-                Console.WriteLine($"{stat.Key}: {stat.Value}");
-            }
-        }
-
-        static void HandleUnique(Dictionary<string, int> searchStats)
-        {
-            Console.WriteLine(searchStats.Count);
-        }
-
-        static void PrintCurrent(Stack<string> stack)
-        {
-            if (stack.Count > 0)
-            {
-                Console.WriteLine($"current: {stack.Peek()}");
-            }
-            else
-            {
-                Console.WriteLine("current is empty");
+                Console.WriteLine(rm.GetString("CurrentEmpty"));
             }
         }
     }
