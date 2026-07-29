@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,9 +8,9 @@ namespace BrowserHistory
     {
         static void Main(string[] args)
         {
-            Stack<string> backStack = new Stack<string>();
+            Stack<string> BackSearch = new Stack<string>();
             
-            Stack<string> forwardStack = new Stack<string>();
+            Stack<string> ForwardSearch = new Stack<string>();
             
             Dictionary<string, int> searchStats = new Dictionary<string, int>();
 
@@ -21,21 +21,21 @@ namespace BrowserHistory
                 
                 if (string.IsNullOrEmpty(input)) continue;
 
-                string[] parts = input.Split(' ', 2);
-                string command = parts[0].ToUpper();
+                string[] commandArgs = input.Split(' ', 2);
+                string command = commandArgs[0].ToUpper();
 
                 switch (command)
                 {
                     case "SEARCH":
-                        if (parts.Length < 2)
+                        if (commandArgs.Length < 2)
                         {
                             Console.WriteLine("Please provide a search term.");
                             break;
                         }
-                        string term = parts[1];
+                        string term = commandArgs[1];
                         
-                        backStack.Push(term);
-                        forwardStack.Clear();
+                        BackSearch.Push(term);
+                        ForwardSearch.Clear();
 
                         if (searchStats.ContainsKey(term))
                         {
@@ -46,16 +46,19 @@ namespace BrowserHistory
                             searchStats[term] = 1;
                         }
                         
-                        PrintCurrent(backStack);
+                        PrintCurrent(BackSearch);
                         break;
 
                     case "BACK":
-                        if (backStack.Count >= 1) 
+                        if (BackSearch.Count > 1) 
                         {
-                            forwardStack.Push(backStack.Pop());
-                            PrintCurrent(backStack);
+                            ForwardSearch.Push(BackSearch.Pop());
+                            PrintCurrent(BackSearch);
                         }
-                        
+                        else if(BackSearch.Count == 1)
+                        {
+                            Console.WriteLine("You can't use back!");
+                        }
                         else
                         {
                             Console.WriteLine("History is empty.");
@@ -63,10 +66,10 @@ namespace BrowserHistory
                         break;
 
                     case "FORWARD":
-                        if (forwardStack.Count > 0)
+                        if (ForwardSearch.Count > 0)
                         {
-                            backStack.Push(forwardStack.Pop());
-                            PrintCurrent(backStack);
+                            BackSearch.Push(ForwardSearch.Pop());
+                            PrintCurrent(BackSearch);
                         }
                         else
                         {
@@ -75,7 +78,7 @@ namespace BrowserHistory
                         break;
 
                     case "CURRENT":
-                        PrintCurrent(backStack);
+                        PrintCurrent(BackSearch);
                         break;
 
                     case "STATS":
