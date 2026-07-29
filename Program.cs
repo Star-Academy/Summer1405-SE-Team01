@@ -10,15 +10,10 @@ namespace BrowserHistory
 
         static void Main(string[] args)
         {
-<<<<<<< HEAD
+
             var BackSearch = new Stack<string>();
             var ForwardSearch = new Stack<string>();
             var searchStats = new Dictionary<string, int>();
-=======
-            Stack<string> BackSearch = new Stack<string>();
-            Stack<string> ForwardSearch = new Stack<string>();
-            Dictionary<string, int> searchStats = new Dictionary<string, int>();
->>>>>>> 5a025d0740c84a13f0c181333b855c276166b75e
 
             while (true)
             {
@@ -27,9 +22,9 @@ namespace BrowserHistory
 
                 if (string.IsNullOrEmpty(input)) continue;
 
-                string[] commandArgs = input.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-                string command = commandArgs[0].ToUpper();
-                string argument = commandArgs.Length > 1 ? commandArgs[1].Trim() : string.Empty;
+                var commandArgs = input.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+                var command = commandArgs[0].ToUpper();
+                var argument = commandArgs.Length > 1 ? commandArgs[1].Trim() : string.Empty;
 
                 switch (command)
                 {
