@@ -10,9 +10,15 @@ namespace BrowserHistory
 
         static void Main(string[] args)
         {
+<<<<<<< HEAD
             var BackSearch = new Stack<string>();
             var ForwardSearch = new Stack<string>();
             var searchStats = new Dictionary<string, int>();
+=======
+            Stack<string> BackSearch = new Stack<string>();
+            Stack<string> ForwardSearch = new Stack<string>();
+            Dictionary<string, int> searchStats = new Dictionary<string, int>();
+>>>>>>> 5a025d0740c84a13f0c181333b855c276166b75e
 
             while (true)
             {
