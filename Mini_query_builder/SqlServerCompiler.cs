@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SqlBuilderLibrary
+namespace SqlBuilder
 {
     public class SqlServerCompiler
     {
-        public IQueryParts parameters = new SqlServerGenerator();
-        public IQueryGenerator Compiler = new RDBMSgenerator();
+        public IQueryTranslator parameters = new SqlServerGenerator();
+        public IQueryGenerator Compiler = new QueryCompiler();
     }
 }

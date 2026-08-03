@@ -1,24 +1,35 @@
 using Microsoft.Data.SqlClient;
 using System;
 
-namespace SqlBuilderLibrary
+namespace SqlBuilder
 {
-    public class SQLServer_sql
+    public class SQLServerExecutor : ISQLServerExecutor
     {
-        public static void ExecuteOnSqlServer(CompileResult result, string connectionString)
+        public void ExecuteOnSqlServer(CompileResult result, string connectionString)
         {
             using var connection = new SqlConnection(connectionString);
+            OpeningConnection(connection);
+
+            using var command = new SqlCommand(result.RawQuery, connection);
+            AddParameters(command, result);
+
+            using var reader = command.ExecuteReader();
+
+            PrintQueryResult(reader);
+        }
+        public void OpeningConnection(SqlConnection connection)
+        {
             connection.Open();
-
-            using var command = new SqlCommand(result.Sql, connection);
-
+        }
+        public void AddParameters(SqlCommand command, CompileResult result)
+        {
             for (int i = 0; i < result.Bindings.Count; i++)
             {
                 command.Parameters.AddWithValue($"@p{i + 1}", result.Bindings[i]);
             }
-
-            using var reader = command.ExecuteReader();
-
+        }
+        public void PrintQueryResult(SqlDataReader reader)
+        {
             while (reader.Read())
             {
                 var rowData = new List<string>();
@@ -35,5 +46,6 @@ namespace SqlBuilderLibrary
                 Console.WriteLine(string.Join(" | ", rowData));
             }
         }
+
     }
 }

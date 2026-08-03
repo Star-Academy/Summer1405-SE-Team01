@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SqlBuilderLibrary
+namespace SqlBuilder
 {
-    public class RDBMSgenerator : IQueryGenerator
+    public class QueryCompiler : IQueryGenerator
     {
-        public CompileResult Compile(Query query, IQueryParts parameters)
+        public CompileResult Compile(Query query, IQueryTranslator parameters)
         {
             var result = new CompileResult();
 
-            string sql_query_string = $"{parameters.selectClause(query)} {parameters.fromClause(query)} {parameters.whereClause(query).Sql}";
+            var sql_query_string = $"{parameters.selectClause(query)} {parameters.fromClause(query)} {parameters.whereClause(query).RawQuery}";
             result.Bindings = parameters.whereClause(query).Bindings;
-            result.Sql = sql_query_string;
+            result.RawQuery = sql_query_string;
             return result;
         }
     }

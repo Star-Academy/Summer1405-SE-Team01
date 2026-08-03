@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SqlBuilderLibrary
+namespace SqlBuilder
 {
-    public class SqlServerGenerator : IQueryParts {
+    public class SqlServerGenerator : IQueryTranslator {
         public string selectClause(Query query)
         {
             string columnsString = query.Context.SelectedColumns.Count > 0
@@ -12,7 +12,7 @@ namespace SqlBuilderLibrary
             
             return $"SELECT {columnsString}";
         }
-
+        
         public string fromClause(Query query)
         {
             return $"FROM [{query.Context.TableName}]";
@@ -39,7 +39,7 @@ namespace SqlBuilderLibrary
                     result.Bindings.Add(value);
                     paramIndex++;
                 }
-                result.Sql = " WHERE " + string.Join(" AND ", whereClauses);
+                result.RawQuery = " WHERE " + string.Join(" AND ", whereClauses);
             
             }
 

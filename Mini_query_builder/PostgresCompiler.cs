@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SqlBuilderLibrary
+namespace SqlBuilder
 {
     public class PostgresCompiler
     {
-        public IQueryParts parameters = new PostgreGenerator();
-        public IQueryGenerator Compiler = new RDBMSgenerator();
-
+        public IQueryTranslator parameters = new PostgreGenerator();
+        public IQueryGenerator Compiler = new QueryCompiler();
     }
 }

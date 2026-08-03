@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SqlBuilderLibrary
+namespace SqlBuilder
 {
-    public class PostgreGenerator : IQueryParts {
+    public class PostgreGenerator : IQueryTranslator {
         public string selectClause(Query query)
         {
             string columnsString = query.Context.SelectedColumns.Count > 0
@@ -31,8 +31,7 @@ namespace SqlBuilderLibrary
                     result.Bindings.Add(condition.Value);
                     paramIndex++;
                 }
-                result.Sql = " WHERE " + string.Join(" AND ", whereClauses);
-            
+                result.RawQuery = " WHERE " + string.Join(" AND ", whereClauses);
             }
 
             return result;
