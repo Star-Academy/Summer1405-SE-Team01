@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using Microsoft.VisualBasic;
 
 namespace SqlBuilderLibrary
 {
@@ -8,8 +10,16 @@ namespace SqlBuilderLibrary
         public List<object> Bindings { get; set; } = new();
     }
 
-    public interface QueryGenerator
+    public interface IQueryGenerator
     {
-        CompileResult Compile(Query query);
+        CompileResult Compile(Query query, IQueryParts parameters);
+    }
+
+    public interface IQueryParts
+    {
+        string selectClause(Query query);
+        string fromClause(Query query);
+
+        CompileResult whereClause(Query query);
     }
 }

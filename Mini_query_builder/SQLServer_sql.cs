@@ -14,11 +14,11 @@ namespace SqlBuilderLibrary
 
             for (int i = 0; i < result.Bindings.Count; i++)
             {
-                command.Parameters.AddWithValue($"@p{i}", result.Bindings[i]);
+                command.Parameters.AddWithValue($"@p{i + 1}", result.Bindings[i]);
             }
 
             using var reader = command.ExecuteReader();
-            
+
             while (reader.Read())
             {
                 var rowData = new List<string>();

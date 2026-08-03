@@ -8,51 +8,27 @@ class Program
         var query = new Query()
             .From("Student2")
             .Select("StudentNumber", "FirstName", "LastName")
+            .Where("IsMale", true)
             .Where("Grade", 12);
 
+        var pg = new PostgresCompiler();
+        var pgResult = pg.Compiler.Compile(query, pg.parameters);
+        var pgConn = "Host=localhost;Username=postgres;Password=postgres;Database=mohaymen";
         
-        QueryGenerator pgCompiler = new PostgresCompiler();
-        var pgResult = pgCompiler.Compile(query);
+        DatabaseHelper.ExecuteDatabase(
+            "PostgreSQL", 
+            pgResult, 
+            () => NPG_sql.ExecuteOnPostgres(pgResult, pgConn)
+        );
 
-        Console.WriteLine("PostgreSQL\n");
-        Console.WriteLine($"SQL: {pgResult.Sql}");
-        Console.WriteLine($"Bindings: [{string.Join(", ", pgResult.Bindings)}]");
+        var sql = new SqlServerCompiler();
+        var sqlResult = sql.Compiler.Compile(query, sql.parameters);
+        var sqlConn = "Server=localhost;Database=mohaymen;User Id=sa;Password=Your_strong_Password123;TrustServerCertificate=True;";
         
-        string pgConnectionString = "Host=localhost;Username=postgres;Password=postgres;Database=mohaymen";
-        
-        try 
-        {
-            Console.WriteLine("\nConnecting and Executing on PostgreSQL...\n");
-            NPG_sql.ExecuteOnPostgres(pgResult, pgConnectionString);
-            Console.WriteLine("\nPostgreSQL Execution Successful!");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[!] PostgreSQL Error: {ex.Message}");
-        }
-
-        Console.WriteLine("\n\n");
-
-        
-        QueryGenerator sqlServerCompiler = new SqlServerCompiler();
-        var sqlResult = sqlServerCompiler.Compile(query);
-
-        Console.WriteLine("SQL Server");
-        Console.WriteLine($"SQL: {sqlResult.Sql}");
-        Console.WriteLine($"Bindings: [{string.Join(", ", sqlResult.Bindings)}]");
-
-        string sqlConnectionString = "Server=localhost;Database=mohaymen;User Id=sa;Password=Your_strong_Password123;TrustServerCertificate=True;";
-        
-        try 
-        {
-            Console.WriteLine("\nConnecting and Executing on SQL Server...\n");
-            SQLServer_sql.ExecuteOnSqlServer(sqlResult, sqlConnectionString);
-            Console.WriteLine("\nSQL Server Execution Successful!");
-            
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[!] SQL Server Error: {ex.Message}");
-        }
+        DatabaseHelper.ExecuteDatabase(
+            "SQL Server", 
+            sqlResult, 
+            () => SQLServer_sql.ExecuteOnSqlServer(sqlResult, sqlConn)
+        );
     }
 }
