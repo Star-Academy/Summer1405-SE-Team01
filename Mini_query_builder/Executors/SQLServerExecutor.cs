@@ -3,7 +3,39 @@ using System;
 
 namespace SqlBuilder
 {
-    public class SQLServerExecutor : ISQLServerExecutor
+    public class SQLServerExecutorHandler : ISQLServerExecutorHandler
+    {
+        public void OpeningConnection(SqlConnection connection)
+        {
+            connection.Open();
+        }
+
+        public void AddParameters(SqlCommand command, CompileResult result)
+        {
+            for (int i = 0; i < result.Bindings.Count; i++)
+            {
+                command.Parameters.AddWithValue($"@p{i + 1}", result.Bindings[i]);
+            }
+        }
+
+        public void PrintQueryResult(SqlDataReader reader)
+        {
+            while (reader.Read())
+            {
+                var rowData = new System.Collections.Generic.List<string>();
+
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    string columnName = reader.GetName(i);
+                    object value = reader.GetValue(i);
+                    rowData.Add($"{columnName}: {value}");
+                }
+
+                Console.WriteLine(string.Join(" | ", rowData));
+            }
+        }
+    }
+    public class SQLServerExecutor : SQLServerExecutorHandler , ISQLServerExecutor 
     {
         public void ExecuteOnSqlServer(CompileResult result, string connectionString)
         {
@@ -17,35 +49,5 @@ namespace SqlBuilder
 
             PrintQueryResult(reader);
         }
-        public void OpeningConnection(SqlConnection connection)
-        {
-            connection.Open();
-        }
-        public void AddParameters(SqlCommand command, CompileResult result)
-        {
-            for (int i = 0; i < result.Bindings.Count; i++)
-            {
-                command.Parameters.AddWithValue($"@p{i + 1}", result.Bindings[i]);
-            }
-        }
-        public void PrintQueryResult(SqlDataReader reader)
-        {
-            while (reader.Read())
-            {
-                var rowData = new List<string>();
-
-                for (int i = 0; i < reader.FieldCount; i++)
-                {
-                    string columnName = reader.GetName(i);
-
-                    object value = reader.GetValue(i);
-
-                    rowData.Add($"{columnName}: {value}");
-                }
-
-                Console.WriteLine(string.Join(" | ", rowData));
-            }
-        }
-
     }
 }

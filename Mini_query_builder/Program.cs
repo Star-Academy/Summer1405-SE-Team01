@@ -11,9 +11,6 @@ namespace SqlBuilder
             var localizer = new ErrorLocalizer();
             localizer.LoadLanguage("en");
 
-            string errorKey = "DatabaseTimeout";
-            Console.WriteLine(localizer.Get(errorKey));
-
             IDatabaseRunner dbRunner = new DatabaseRunner();
 
             var query = new Query()
