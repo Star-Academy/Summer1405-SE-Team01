@@ -4,7 +4,7 @@ namespace SqlBuilder
 {
     public class DatabaseRunner : IDatabaseRunner
     {
-        public void ExecuteDatabase(string dbName, dynamic result, Action executeAction)
+        public void Execute(string dbName, dynamic result, Action executeAction)
         {
             Console.WriteLine($"{dbName}\nSQL: {result.RawQuery}\nBindings: [{string.Join(", ", result.Bindings)}]");
 

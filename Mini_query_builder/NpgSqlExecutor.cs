@@ -1,27 +1,17 @@
-using Npgsql;
 using System;
+using System.Collections.Generic;
+using Npgsql;
+
 
 namespace SqlBuilder
 {
-    public class NpgsqlExecutor : INpgSqlExecutor
+    public class NpgsqlExecutorHandler: INpgSqlExecutorHandler
     {
-        public void ExecuteOnPostgres(CompileResult result, string connectionString)
-        {
-            using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
-            OpeningConnection(connection);
-
-            using var command = new NpgsqlCommand(result.RawQuery, connection);
-
-            AddParameters(command, result);
-
-            using var reader = command.ExecuteReader();
-
-            PrintQueryResult(reader);
-        }
         public void OpeningConnection(NpgsqlConnection connection)
         {
             connection.Open();
         }
+
         public void AddParameters(NpgsqlCommand command, CompileResult result)
         {
             foreach (var binding in result.Bindings)
@@ -29,6 +19,7 @@ namespace SqlBuilder
                 command.Parameters.Add(new NpgsqlParameter { Value = binding });
             }
         }
+
         public void PrintQueryResult(NpgsqlDataReader reader)
         {
             while (reader.Read())
@@ -47,5 +38,22 @@ namespace SqlBuilder
                 Console.WriteLine(string.Join(" | ", rowData));
             }
         }
+    }
+    public class NpgsqlExecutor : NpgsqlExecutorHandler, INpgSqlExecutor
+    {
+        public void ExecuteOnPostgres(CompileResult result, string connectionString)
+        {
+            using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            OpeningConnection(connection);
+
+            using var command = new NpgsqlCommand(result.RawQuery, connection);
+
+            AddParameters(command, result);
+
+            using var reader = command.ExecuteReader();
+
+            PrintQueryResult(reader);
+        }
+        
     }
 }

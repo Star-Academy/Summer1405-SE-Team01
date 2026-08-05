@@ -4,6 +4,6 @@ namespace SqlBuilder
 {
     public interface IDatabaseRunner
     {
-        void ExecuteDatabase(string dbName, dynamic result, Action executeAction);
+        void Execute(string dbName, dynamic result, Action executeAction);
     }
 }

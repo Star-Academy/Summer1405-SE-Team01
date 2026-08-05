@@ -3,10 +3,17 @@ using SqlBuilder;
 
 namespace SqlBuilder
 {
-    class Program
+    static class Program
     {
         static void Main()
         {
+
+            var localizer = new ErrorLocalizer();
+            localizer.LoadLanguage("en");
+
+            string errorKey = "DatabaseTimeout";
+            Console.WriteLine(localizer.Get(errorKey));
+
             IDatabaseRunner dbRunner = new DatabaseRunner();
 
             var query = new Query()
@@ -15,30 +22,28 @@ namespace SqlBuilder
                 .Where("IsMale", true)
                 .Where("Grade", 12);
 
-            string postgreUser = Environment.GetEnvironmentVariable("PG_USERNAME") ?? "postgres";
-            string postgrePass = Environment.GetEnvironmentVariable("PG_PASSWORD") ?? "postgres";
+            IUsernamePass usernamePass = new UsernamePass();
 
             var postgresCompiler = new PostgresCompiler();
-            var PostgresQueryResult = postgresCompiler.Compiler.Compile(query, postgresCompiler.parameters);
-            var PostgresConnection = $"Host=localhost;Username={postgreUser};Password={postgrePass};Database=mohaymen";
+            var postgresQueryResult = postgresCompiler.Compiler.Compile(query, postgresCompiler.parameters);
+            var postgresConnection = $"Host=localhost;Username={usernamePass.PostgresUser};Password={usernamePass.PostgresPass};Database=mohaymen";
             var NpgSql = new NpgsqlExecutor();
-            dbRunner.ExecuteDatabase(
+
+            dbRunner.Execute(
                 "PostgreSQL",
-                PostgresQueryResult,
-                () => NpgSql.ExecuteOnPostgres(PostgresQueryResult, PostgresConnection)
+                postgresQueryResult,
+                () => NpgSql.ExecuteOnPostgres(postgresQueryResult, postgresConnection)
             );
 
-            string mssqlUser = Environment.GetEnvironmentVariable("SQL_USERNAME") ?? "sa";
-            string mssqlPass = Environment.GetEnvironmentVariable("SQL_PASSWORD") ?? "Your_strong_Password123";
-
             var sqlServerCompiler = new SqlServerCompiler();
-            var SqlServerQueryResult = sqlServerCompiler.Compiler.Compile(query, sqlServerCompiler.parameters);
-            var SqlServerConnection = $"Server=localhost;Database=mohaymen;User Id={mssqlUser};Password={mssqlPass};TrustServerCertificate=True;";
-            var SqlServer = new SQLServerExecutor();
-            dbRunner.ExecuteDatabase(
+            var sqlServerQueryResult = sqlServerCompiler.Compiler.Compile(query, sqlServerCompiler.parameters);
+            var sqlServerConnection = $"Server=localhost;Database=mohaymen;User Id={usernamePass.MssqlUser};Password={usernamePass.MssqlPass};TrustServerCertificate=True;";
+            var sqlServer = new SQLServerExecutor();
+
+            dbRunner.Execute(
                 "SQL Server",
-                SqlServerQueryResult,
-                () => SqlServer.ExecuteOnSqlServer(SqlServerQueryResult, SqlServerConnection)
+                sqlServerQueryResult,
+                () => sqlServer.ExecuteOnSqlServer(sqlServerQueryResult, sqlServerConnection)
             );
         }
     }

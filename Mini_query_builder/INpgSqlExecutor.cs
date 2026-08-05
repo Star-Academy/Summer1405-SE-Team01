@@ -4,11 +4,9 @@ using Npgsql;
 
 namespace SqlBuilder
 {
-    public interface INpgSqlExecutor
+    public interface INpgSqlExecutor: INpgSqlExecutorHandler
     {
         void ExecuteOnPostgres(CompileResult result, string connectionString);
-        void OpeningConnection(NpgsqlConnection connection);
-        void AddParameters(NpgsqlCommand command, CompileResult result);
-        void PrintQueryResult(NpgsqlDataReader reader);
     }
+    
 }
