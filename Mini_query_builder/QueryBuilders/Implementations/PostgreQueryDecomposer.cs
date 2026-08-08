@@ -9,7 +9,7 @@ namespace SqlBuilder.QueryBuilders.Implementations
     internal sealed class PostgreQueryDecomposer : IQueryDecomposer {
         public string selectClause(Query query)
         {
-            string columnsString = query.Context.SelectedColumns.Count > 0
+            var columnsString = query.Context.SelectedColumns.Count > 0
                 ? string.Join(", ", query.Context.SelectedColumns.Select(c => $"\"{c}\""))
                 : "*";
             return $"SELECT {columnsString}";

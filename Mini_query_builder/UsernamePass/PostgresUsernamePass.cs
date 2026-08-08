@@ -6,6 +6,5 @@ namespace SqlBuilder
     {
         public string GetUserInfo() { return Environment.GetEnvironmentVariable("PG_USERNAME") ?? "postgres"; }
         public string GetPassInfo() { return Environment.GetEnvironmentVariable("PG_PASSWORD") ?? "postgres"; }
-
     }
 }
