@@ -28,7 +28,7 @@ namespace SqlBuilder
             catch (JsonException ex)
             {
                 Console.WriteLine($"[Error] Invalid JSON format in '{filePath}': {ex.Message}");
-                _messages = new Dictionary<string, string>(); 
+                _messages = new Dictionary<string, string>();
             }
             catch (IOException ex)
             {

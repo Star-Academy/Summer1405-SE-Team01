@@ -8,12 +8,18 @@ using SqlBuilder.ResultRecords;
 
 namespace SqlBuilder.Executors.Implementations
 {
-    
-    internal sealed class SQLServerExecutor : ISQLServerExecutor 
+    internal sealed class SQLServerExecutor : ISQLServerExecutor
     {
-        ISQLServerExecutorConnection executorConnection = new SQLServerExecutorConnection();
-        ISQLServerExecutorPrintResult executorPrintResult = new SQLServerExecutorPrintResult();
-        ISQLServerExecutorAddParameters executorAddParameter = new SQLServerExecutorAddParameters();
+        public ISQLServerExecutorConnection executorConnection;
+        public ISQLServerExecutorPrintResult executorPrintResult;
+        public ISQLServerExecutorAddParameters executorAddParameter;
+
+        public SQLServerExecutor(ISQLServerExecutorConnection executorConnection, ISQLServerExecutorPrintResult executorPrintResult, ISQLServerExecutorAddParameters executorAddParameter)
+        {
+            this.executorConnection = executorConnection;
+            this.executorPrintResult = executorPrintResult;
+            this.executorAddParameter = executorAddParameter;
+        }
         public void ExecuteOnSqlServer(CompileResult result, string connectionString)
         {
             using var connection = new SqlConnection(connectionString);
@@ -26,7 +32,6 @@ namespace SqlBuilder.Executors.Implementations
 
             var ResultData = executorPrintResult.PrintQueryResult(reader);
             Console.WriteLine(string.Join("\n", ResultData));
-
         }
     }
 }

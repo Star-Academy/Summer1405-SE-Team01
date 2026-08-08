@@ -6,12 +6,13 @@ using SqlBuilder.Executors.Abstractions;
 
 namespace SqlBuilder.Executors.Implementations
 {
-    internal sealed class NpgSqlExecutorPrintResult: INpgSqlExecutorPrintResult
+    internal sealed class NpgSqlExecutorPrintResult : INpgSqlExecutorPrintResult
     {
         public List<string> PrintQueryResult(NpgsqlDataReader reader)
         {
             var ResultDataPrint = new List<string>();
-            while (reader.Read()){
+            while (reader.Read())
+            {
 
                 var RowData = new List<string>();
 

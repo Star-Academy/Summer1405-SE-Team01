@@ -11,10 +11,15 @@ namespace SqlBuilder.Executors.Implementations
 {
     internal sealed class NpgsqlExecutor : INpgSqlExecutor
     {
-        INpgSqlExecutorConnection executorConnection = new NpgSqlExecutorConnection();
-        INpgSqlExecutorPrintResult executorPrintResult = new NpgSqlExecutorPrintResult();
-        INpgSqlExecutorAddParameter executorAddParameter = new NpgSqlExecutorAddParameter();
-        
+        public INpgSqlExecutorConnection executorConnection;
+        public INpgSqlExecutorPrintResult executorPrintResult;
+        public INpgSqlExecutorAddParameter executorAddParameter;
+        public NpgsqlExecutor(INpgSqlExecutorConnection executorConnection, INpgSqlExecutorPrintResult executorPrintResult, INpgSqlExecutorAddParameter executorAddParameter)
+        {
+            this.executorConnection = executorConnection;
+            this.executorPrintResult = executorPrintResult;
+            this.executorAddParameter = executorAddParameter;
+        }
         public string ExecuteOnPostgres(CompileResult result, string connectionString)
         {
             using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
@@ -30,6 +35,5 @@ namespace SqlBuilder.Executors.Implementations
 
             return string.Join("\n", ResultData);
         }
-
     }
 }

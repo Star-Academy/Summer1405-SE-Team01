@@ -26,7 +26,7 @@ namespace SqlBuilder.QueryBuilders.Implementations
             if (query.Context.Conditions.Count > 0)
             {
                 var whereClauses = new List<string>();
-                int paramIndex = 1;
+                var paramIndex = 1;
                 
                 foreach (var condition in query.Context.Conditions)
                 {
@@ -36,7 +36,6 @@ namespace SqlBuilder.QueryBuilders.Implementations
                 }
                 result.RawQuery = " WHERE " + string.Join(" AND ", whereClauses);
             }
-
             return result;
         }
     }

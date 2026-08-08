@@ -8,6 +8,7 @@ namespace SqlBuilder.QueryBuilders.Abstractions
 {
     public interface IQueryCompiler
     {
-        CompileResult Compile(Query query);
+
+           CompileResult Compile(Query query);
     }
 }

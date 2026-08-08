@@ -7,6 +7,6 @@ namespace SqlBuilder.Querying
     {
         public string TableName { get; set; } = string.Empty;
         public List<string> SelectedColumns { get; set; } = new();
-        public List<(string Column, object Value)> Conditions { get; set; } = new(); 
+        public List<(string Column, object Value)> Conditions { get; set; } = new();
     }
 }

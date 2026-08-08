@@ -10,10 +10,9 @@ namespace SqlBuilder.QueryBuilders.Implementations
     internal sealed class SqlServerQueryDecomposer : IQueryDecomposer {
         public string selectClause(Query query)
         {
-            string columnsString = query.Context.SelectedColumns.Count > 0
+            var columnsString = query.Context.SelectedColumns.Count > 0
                 ? string.Join(", ", query.Context.SelectedColumns.Select(coloumn => $"[{coloumn}]"))
                 : "*";
-            
             return $"SELECT {columnsString}";
         }
         
@@ -44,9 +43,7 @@ namespace SqlBuilder.QueryBuilders.Implementations
                     paramIndex++;
                 }
                 result.RawQuery = " WHERE " + string.Join(" AND ", whereClauses);
-            
             }
-
             return result;
         }
     }

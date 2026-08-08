@@ -10,5 +10,5 @@ namespace SqlBuilder.Executors.Abstractions
     {
         string ExecuteOnPostgres(CompileResult result, string connectionString);
     }
-    
+
 }
