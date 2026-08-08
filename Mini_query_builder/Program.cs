@@ -1,9 +1,18 @@
 using System;
 using SqlBuilder;
+using SqlBuilder.ResultRecords;
+using System.Data.Common;
+using SqlBuilder.Executors.Implementations;
+using SqlBuilder.Executors.Abstractions;
+using SqlBuilder.Querying;
+using SqlBuilder.QueryBuilders.Implementations;
+using SqlBuilder.QueryBuilders.Abstractions;
+
+
 
 namespace SqlBuilder
 {
-    static class Program
+    internal static class Program
     {
         static void Main()
         {
@@ -11,7 +20,6 @@ namespace SqlBuilder
             var localizer = new ErrorLocalizer();
             localizer.LoadLanguage("en");
 
-            IDatabaseRunner dbRunner = new DatabaseRunner();
 
             var query = new Query()
                 .From("Student2")
@@ -19,29 +27,47 @@ namespace SqlBuilder
                 .Where("IsMale", true)
                 .Where("Grade", 12);
 
-            IUsernamePass usernamePass = new UsernamePass();
+            IUsernamePass pgUsernamePass = new PostgresUsernamePass();
+            IUsernamePass sqlServerUsernamePass = new SqlServerUsernamePass();
 
-            var postgresCompiler = new PostgresCompiler();
-            var postgresQueryResult = postgresCompiler.Compiler.Compile(query, postgresCompiler.parameters);
-            var postgresConnection = $"Host=localhost;Username={usernamePass.PostgresUser};Password={usernamePass.PostgresPass};Database=mohaymen";
+            var postgresQueryResult =  (new QueryCompiler(new PostgreQueryDecomposer())).Compile(query);
+            var postgresConnection = $"Host=localhost;Username={pgUsernamePass.UserInfo};Password={pgUsernamePass.PassInfo};Database=mohaymen";
             var NpgSql = new NpgsqlExecutor();
 
-            dbRunner.Execute(
-                "PostgreSQL",
-                postgresQueryResult,
-                () => NpgSql.ExecuteOnPostgres(postgresQueryResult, postgresConnection)
-            );
+            Console.WriteLine($"{"PostgreSQL"}\nSQL: {postgresQueryResult.RawQuery}\nBindings: [{string.Join(", ", postgresQueryResult.Bindings)}]");
+            Console.WriteLine($"{"PostgreSQL"}");
+            try
+            {
+                Console.WriteLine(NpgSql.ExecuteOnPostgres(postgresQueryResult, postgresConnection));
+                Console.WriteLine($" Execution Successful!\n");
+            }
+            catch (DbException ex)
+            {
+                Console.WriteLine($"[!] Database Error: {ex.Message}\n");
+            }
+            catch (TimeoutException)
+            {
+                Console.WriteLine($"[!] Timeout Error: Operation took too long.\n");
+            }
 
-            var sqlServerCompiler = new SqlServerCompiler();
-            var sqlServerQueryResult = sqlServerCompiler.Compiler.Compile(query, sqlServerCompiler.parameters);
-            var sqlServerConnection = $"Server=localhost;Database=mohaymen;User Id={usernamePass.MssqlUser};Password={usernamePass.MssqlPass};TrustServerCertificate=True;";
+            var sqlServerQueryResult = (new QueryCompiler(new SqlServerQueryDecomposer())).Compile(query);
+            var sqlServerConnection = $"Server=localhost;Database=mohaymen;User Id={sqlServerUsernamePass.UserInfo};Password={sqlServerUsernamePass.PassInfo};TrustServerCertificate=True;";
             var sqlServer = new SQLServerExecutor();
 
-            dbRunner.Execute(
-                "SQL Server",
-                sqlServerQueryResult,
-                () => sqlServer.ExecuteOnSqlServer(sqlServerQueryResult, sqlServerConnection)
-            );
+            Console.WriteLine($"{"SQL Server"}");
+            try
+            {
+                sqlServer.ExecuteOnSqlServer(sqlServerQueryResult, sqlServerConnection);
+                Console.WriteLine($" Execution Successful!\n");
+            }
+            catch (DbException ex)
+            {
+                Console.WriteLine($"[!] Database Error: {ex.Message}\n");
+            }
+            catch (TimeoutException)
+            {
+                Console.WriteLine($"[!] Timeout Error: Operation took too long.\n");
+            }
         }
     }
 }
