@@ -4,7 +4,7 @@ namespace SqlBuilder
 {
     public interface IUsernamePass
     {
-        string UserInfo { get; }
-        string PassInfo { get; }
+        string GetUserInfo();
+		string GetPassInfo();
     }
 }

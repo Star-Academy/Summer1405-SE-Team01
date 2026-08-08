@@ -25,11 +25,8 @@ namespace SqlBuilder
                 .Where("IsMale", true)
                 .Where("Grade", 12);
 
-            var pgUsernamePass = new PostgresUsernamePass();
-            var sqlServerUsernamePass = new SqlServerUsernamePass();
-
             var postgresQueryResult = (new QueryCompiler(new PostgreQueryDecomposer())).Compile(query);
-            var postgresConnection = $"Host=localhost;Username={pgUsernamePass.UserInfo};Password={pgUsernamePass.PassInfo};Database=mohaymen";
+            var postgresConnection = $"Host=localhost;Username={new PostgresUsernamePass().GetUserInfo()};Password={new PostgresUsernamePass().GetPassInfo()};Database=mohaymen";
 
             var NpgSqlexecutorConnection = new NpgSqlExecutorConnection();
             var NpgSqlexecutorPrintResult = new NpgSqlExecutorPrintResult();
@@ -53,7 +50,7 @@ namespace SqlBuilder
             }
 
             var sqlServerQueryResult = (new QueryCompiler(new SqlServerQueryDecomposer())).Compile(query);
-            var sqlServerConnection = $"Server=localhost;Database=mohaymen;User Id={sqlServerUsernamePass.UserInfo};Password={sqlServerUsernamePass.PassInfo};TrustServerCertificate=True;";
+            var sqlServerConnection = $"Server=localhost;Database=mohaymen;User Id={new SqlServerUsernamePass().GetUserInfo()};Password={new SqlServerUsernamePass().GetPassInfo()};TrustServerCertificate=True;";
 
             var SQLServerexecutorConnection = new SQLServerExecutorConnection();
             var SQLServerexecutorPrintResult = new SQLServerExecutorPrintResult();
