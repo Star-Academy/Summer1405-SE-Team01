@@ -7,7 +7,8 @@ using SqlBuilder.QueryBuilders.Abstractions;
 
 namespace SqlBuilder.QueryBuilders.Implementations
 {
-    internal sealed class SqlServerQueryDecomposer : IQueryDecomposer {
+    internal sealed class SqlServerQueryDecomposer : IQueryDecomposer
+    {
         public string selectClause(Query query)
         {
             var columnsString = query.Context.SelectedColumns.Count > 0
@@ -15,9 +16,13 @@ namespace SqlBuilder.QueryBuilders.Implementations
                 : "*";
             return $"SELECT {columnsString}";
         }
-        
+
         public string fromClause(Query query)
         {
+            if (string.IsNullOrWhiteSpace(query.Context.TableName))
+            {
+                throw new ArgumentException("Table name cannot be null or empty.", nameof(query));
+            }
             return $"FROM [{query.Context.TableName}]";
         }
 
@@ -28,7 +33,7 @@ namespace SqlBuilder.QueryBuilders.Implementations
             {
                 var whereClauses = new List<string>();
                 int paramIndex = 1;
-                
+
                 foreach (var condition in query.Context.Conditions)
                 {
                     whereClauses.Add($"[{condition.Column}] = @p{paramIndex}");
@@ -38,7 +43,7 @@ namespace SqlBuilder.QueryBuilders.Implementations
                     {
                         value = boolValue ? 1 : 0;
                     }
-    
+
                     result.Bindings.Add(value);
                     paramIndex++;
                 }

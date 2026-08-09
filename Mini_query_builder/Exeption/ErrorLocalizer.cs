@@ -11,7 +11,7 @@ namespace SqlBuilder
 
         public void LoadLanguage(string languageCode)
         {
-            var filePath = $"Locales/errors.{languageCode}.json";
+            var filePath = $"Exeption/Json/errors.{languageCode}.json";
 
             if (!File.Exists(filePath))
             {

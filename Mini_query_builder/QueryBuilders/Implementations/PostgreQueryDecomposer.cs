@@ -6,7 +6,8 @@ using SqlBuilder.ResultRecords;
 
 namespace SqlBuilder.QueryBuilders.Implementations
 {
-    internal sealed class PostgreQueryDecomposer : IQueryDecomposer {
+    internal sealed class PostgreQueryDecomposer : IQueryDecomposer
+    {
         public string selectClause(Query query)
         {
             var columnsString = query.Context.SelectedColumns.Count > 0
@@ -17,6 +18,10 @@ namespace SqlBuilder.QueryBuilders.Implementations
 
         public string fromClause(Query query)
         {
+            if (string.IsNullOrWhiteSpace(query.Context.TableName))
+            {
+                throw new ArgumentException("Table name cannot be null or empty.", nameof(query));
+            }
             return $"FROM \"{query.Context.TableName}\"";
         }
 
@@ -27,7 +32,7 @@ namespace SqlBuilder.QueryBuilders.Implementations
             {
                 var whereClauses = new List<string>();
                 var paramIndex = 1;
-                
+
                 foreach (var condition in query.Context.Conditions)
                 {
                     whereClauses.Add($"\"{condition.Column}\" = ${paramIndex}");
