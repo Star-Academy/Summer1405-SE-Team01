@@ -5,6 +5,7 @@ using SqlBuilder.Executors.Abstractions;
 
 namespace SqlBuilder.Executors.Implementations
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class SQLServerExecutorConnection : ISQLServerExecutorConnection
     {
         public SqlConnection OpeningConnection(SqlConnection connection)

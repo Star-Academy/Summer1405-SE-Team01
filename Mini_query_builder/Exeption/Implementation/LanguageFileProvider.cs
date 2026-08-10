@@ -6,6 +6,7 @@ using SqlBuilder.Exeption.Abstractions;
 
 namespace SqlBuilder.Exeption.Implementations
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class LanguageFileProvider : ILanguageFileProvider
     {
         public bool Exists(string path) => File.Exists(path);

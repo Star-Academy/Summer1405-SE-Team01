@@ -8,6 +8,7 @@ using SqlBuilder.ResultRecords;
 
 namespace SqlBuilder.Executors.Implementations
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class SqlServerCommandExecutor : ISqlServerCommandExecutor
     {
         public IDataReader ExecuteReader(SqlCommand command) => command.ExecuteReader();

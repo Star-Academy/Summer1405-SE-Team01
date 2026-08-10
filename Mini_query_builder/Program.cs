@@ -14,6 +14,7 @@ using SqlBuilder.Exeption.Abstractions;
 
 namespace SqlBuilder
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class Program
     {
         static void Main()
