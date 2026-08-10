@@ -10,7 +10,7 @@ namespace SqlBuilder.QueryBuilders.Implementations
 {
     internal sealed class QueryCompiler : IQueryCompiler
     {
-        IQueryDecomposer parameters;
+        readonly IQueryDecomposer parameters;
         public QueryCompiler(IQueryDecomposer parameters)
         {
             ArgumentNullException.ThrowIfNull(parameters);
@@ -19,10 +19,17 @@ namespace SqlBuilder.QueryBuilders.Implementations
         public CompileResult Compile(Query query)
         {
             ArgumentNullException.ThrowIfNull(query);
+            
             var result = new CompileResult();
-            var sql_query_string = $"{parameters.selectClause(query)} {parameters.fromClause(query)} {parameters.whereClause(query).RawQuery}";
-            result.Bindings = parameters.whereClause(query).Bindings;
+            var selectPart = parameters.selectClause(query);
+            var fromPart = parameters.fromClause(query);
+            var wherePart = parameters.whereClause(query);
+            
+            var sql_query_string = $"{selectPart} {fromPart} {wherePart?.RawQuery}".TrimEnd();
+            
+            result.Bindings = wherePart?.Bindings ?? [];
             result.RawQuery = sql_query_string;
+            
             return result;
         }
     }

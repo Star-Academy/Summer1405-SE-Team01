@@ -2,26 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using SqlBuilder.Exeption.Abstractions;
 
-namespace SqlBuilder
+namespace SqlBuilder.Exeption.Implementations
 {
     internal sealed class ErrorLocalizer : IErrorLocalizer
     {
-        private Dictionary<string, string> _messages = new();
+        private readonly ILanguageFileProvider _fileProvider;
+        private Dictionary<string, string> _messages = [];
+
+        public ErrorLocalizer(ILanguageFileProvider fileProvider)
+        {
+            _fileProvider = fileProvider;
+        }
 
         public void LoadLanguage(string languageCode)
         {
             var filePath = $"Exeption/Json/errors.{languageCode}.json";
 
-            if (!File.Exists(filePath))
+            if (!_fileProvider.Exists(filePath))
             {
                 Console.WriteLine($"[Warning] Language file not found: {filePath}");
                 return;
             }
-
             try
             {
-                var jsonString = File.ReadAllText(filePath);
+                var jsonString = _fileProvider.ReadAllText(filePath);
                 _messages = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString)
                             ?? new Dictionary<string, string>();
             }

@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using Npgsql;
 using SqlBuilder.Executors.Abstractions;
+using System.Data;
 
 
 namespace SqlBuilder.Executors.Implementations
 {
     internal sealed class NpgSqlExecutorPrintResult : INpgSqlExecutorPrintResult
     {
-        public List<string> PrintQueryResult(NpgsqlDataReader reader)
+        public List<string> PrintQueryResult(IDataReader reader)
         {
             var ResultDataPrint = new List<string>();
             while (reader.Read())

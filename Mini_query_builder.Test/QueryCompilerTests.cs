@@ -7,104 +7,106 @@ using NSubstitute;
 using Xunit;
 
 
-namespace Mini_query_builder.Tests;
-
-public class QueryCompilerTests
+namespace Mini_query_builder.Tests.QueryBuilders
 {
-    private readonly IQueryDecomposer _decomposer = Substitute.For<IQueryDecomposer>();
-    private readonly QueryCompiler _sut;
 
-    public QueryCompilerTests()
+    public class QueryCompilerTests
     {
-        _sut = new QueryCompiler(_decomposer);
-    }
+        private readonly IQueryDecomposer _decomposer = Substitute.For<IQueryDecomposer>();
+        private readonly QueryCompiler _sut;
 
-    [Fact]
-    public void Compile_ShouldReturnRawQueryComposedFromSelectFromAndWhereClauses_WhenDecomposerReturnsAllParts()
-    {
-        // Arrange
-        var query = new Query().From("Student");
-        _decomposer.selectClause(query).Returns("SELECT [FirstName]");
-        _decomposer.fromClause(query).Returns("FROM [Student]");
-        _decomposer.whereClause(query).Returns(new CompileResult
+        public QueryCompilerTests()
         {
-            RawQuery = " WHERE [Id] = @p1",
-            Bindings = new List<object> { 1 }
-        });
+            _sut = new QueryCompiler(_decomposer);
+        }
 
-        // Act
-        var result = _sut.Compile(query);
-
-        // Assert
-        result.RawQuery.Should().Be("SELECT [FirstName] FROM [Student]  WHERE [Id] = @p1");
-    }
-
-    [Fact]
-    public void Compile_ShouldReturnBindingsFromWhereClause_WhenDecomposerReturnsBindings()
-    {
-        // Arrange
-        var query = new Query().From("Student");
-        _decomposer.selectClause(query).Returns("SELECT *");
-        _decomposer.fromClause(query).Returns("FROM [Student]");
-        _decomposer.whereClause(query).Returns(new CompileResult
+        [Fact]
+        public void Compile_ShouldReturnRawQueryComposedFromSelectFromAndWhereClauses_WhenDecomposerReturnsAllParts()
         {
-            RawQuery = " WHERE [Grade] = @p1 AND [IsMale] = @p2",
-            Bindings = new List<object> { 12, 1 }
-        });
+            // Arrange
+            var query = new Query().From("Student");
+            _decomposer.selectClause(query).Returns("SELECT [FirstName]");
+            _decomposer.fromClause(query).Returns("FROM [Student]");
+            _decomposer.whereClause(query).Returns(new CompileResult
+            {
+                RawQuery = " WHERE [Id] = @p1",
+                Bindings = [1]
+            });
 
-        // Act
-        var result = _sut.Compile(query);
+            // Act
+            var result = _sut.Compile(query);
 
-        // Assert
-        result.Bindings.Should().BeEquivalentTo(new List<object> { 12, 1 });
-    }
+            // Assert
+            result.RawQuery.Should().Be("SELECT [FirstName] FROM [Student]  WHERE [Id] = @p1");
+        }
 
-    [Fact]
-    public void Compile_ShouldCallSelectClauseAndFromClauseExactlyOnce_WhenInvoked()
-    {
-        // Arrange
-        var query = new Query().From("Student");
-        _decomposer.whereClause(query).Returns(new CompileResult());
+        [Fact]
+        public void Compile_ShouldReturnBindingsFromWhereClause_WhenDecomposerReturnsBindings()
+        {
+            // Arrange
+            var query = new Query().From("Student");
+            _decomposer.selectClause(query).Returns("SELECT *");
+            _decomposer.fromClause(query).Returns("FROM [Student]");
+            _decomposer.whereClause(query).Returns(new CompileResult
+            {
+                RawQuery = " WHERE [Grade] = @p1 AND [IsMale] = @p2",
+                Bindings = [12, 1]
+            });
 
-        // Act
-        _sut.Compile(query);
+            // Act
+            var result = _sut.Compile(query);
 
-        // Assert
-        _decomposer.Received(1).selectClause(query);
-        _decomposer.Received(1).fromClause(query);
-    }
+            // Assert
+            result.Bindings.Should().BeEquivalentTo(new List<object> { 12, 1 });
+        }
 
-    [Fact]
-    public void Compile_Should_CallWhereClauseTwice_WhenInvoked()
-    {
-        // Arrange
-        var query = new Query().From("Student");
-        _decomposer.whereClause(query).Returns(new CompileResult());
+        [Fact]
+        public void Compile_ShouldCallSelectClauseAndFromClauseExactlyOnce_WhenInvoked()
+        {
+            // Arrange
+            var query = new Query().From("Student");
+            _decomposer.whereClause(query).Returns(new CompileResult());
 
-        // Act
-        _sut.Compile(query);
+            // Act
+            _sut.Compile(query);
 
-        // Assert
-        _decomposer.Received(2).whereClause(query);
-    }
+            // Assert
+            _decomposer.Received(1).selectClause(query);
+            _decomposer.Received(1).fromClause(query);
+        }
 
-    [Fact]
-    public void Compile_ShouldThrowArgumentNullException_WhenQueryIsNull()
-    {
-        // Arrange
-        Action act = () => _sut.Compile(null!);
+        [Fact]
+        public void Compile_Should_CallWhereClauseTwice_WhenInvoked()
+        {
+            // Arrange
+            var query = new Query().From("Student");
+            _decomposer.whereClause(query).Returns(new CompileResult());
 
-        // Act & Assert
-        act.Should().Throw<ArgumentNullException>();
-    }
+            // Act
+            _sut.Compile(query);
 
-    [Fact]
-    public void Constructor_ShouldThrowArgumentNullException_WhenDecomposerIsNull()
-    {
-        // Arrange
-        Action act = () => new QueryCompiler(null!);
+            // Assert
+            _decomposer.Received(1).whereClause(query);
+        }
 
-        // Act & Assert
-        act.Should().Throw<ArgumentNullException>();
+        [Fact]
+        public void Compile_ShouldThrowArgumentNullException_WhenQueryIsNull()
+        {
+            // Arrange
+            Action act = () => _sut.Compile(null!);
+
+            // Act & Assert
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void Constructor_ShouldThrowArgumentNullException_WhenDecomposerIsNull()
+        {
+            // Arrange
+            Action act = () => new QueryCompiler(null!);
+
+            // Act & Assert
+            act.Should().Throw<ArgumentNullException>();
+        }
     }
 }

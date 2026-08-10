@@ -35,9 +35,17 @@ namespace SqlBuilder.QueryBuilders.Implementations
 
                 foreach (var condition in query.Context.Conditions)
                 {
-                    whereClauses.Add($"\"{condition.Column}\" = ${paramIndex}");
-                    result.Bindings.Add(condition.Value);
-                    paramIndex++;
+
+                    if (condition.Value == null)
+                    {
+                        whereClauses.Add($"\"{condition.Column}\" IS NULL");
+                    }
+                    else
+                    {
+                        whereClauses.Add($"\"{condition.Column}\" = ${paramIndex}");
+                        result.Bindings.Add(condition.Value);
+                        paramIndex++;
+                    }
                 }
                 result.RawQuery = " WHERE " + string.Join(" AND ", whereClauses);
             }

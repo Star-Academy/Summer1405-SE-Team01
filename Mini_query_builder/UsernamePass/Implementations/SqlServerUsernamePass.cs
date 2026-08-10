@@ -1,6 +1,8 @@
 using System;
+using SqlBuilder;
+using SqlBuilder.UsernamePass.Abstractions;
 
-namespace SqlBuilder
+namespace SqlBuilder.UsernamePass.Implementations
 {
     internal sealed class SqlServerUsernamePass : IUsernamePass
     {

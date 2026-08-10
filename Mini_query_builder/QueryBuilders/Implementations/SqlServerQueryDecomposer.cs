@@ -36,16 +36,23 @@ namespace SqlBuilder.QueryBuilders.Implementations
 
                 foreach (var condition in query.Context.Conditions)
                 {
-                    whereClauses.Add($"[{condition.Column}] = @p{paramIndex}");
-
                     var value = condition.Value;
-                    if (value is bool boolValue)
+                    
+                    if (value == null)
                     {
-                        value = boolValue ? 1 : 0;
+                        whereClauses.Add($"[{condition.Column}] IS NULL");
                     }
+                    else
+                    {
+                        if (value is bool boolValue)
+                        {
+                            value = boolValue ? 1 : 0;
+                        }
 
-                    result.Bindings.Add(value);
-                    paramIndex++;
+                        whereClauses.Add($"[{condition.Column}] = @p{paramIndex}");
+                        result.Bindings.Add(value);
+                        paramIndex++;
+                    }
                 }
                 result.RawQuery = " WHERE " + string.Join(" AND ", whereClauses);
             }

@@ -1,6 +1,6 @@
 using System;
 
-namespace SqlBuilder
+namespace SqlBuilder.UsernamePass.Abstractions
 {
     public interface IUsernamePass
     {

@@ -7,6 +7,10 @@ using SqlBuilder.Executors.Abstractions;
 using SqlBuilder.Querying;
 using SqlBuilder.QueryBuilders.Implementations;
 using SqlBuilder.QueryBuilders.Abstractions;
+using SqlBuilder.UsernamePass.Implementations;
+using SqlBuilder.UsernamePass.Abstractions;
+using SqlBuilder.Exeption.Implementations;
+using SqlBuilder.Exeption.Abstractions;
 
 namespace SqlBuilder
 {
@@ -15,7 +19,7 @@ namespace SqlBuilder
         static void Main()
         {
 
-            var localizer = new ErrorLocalizer();
+            var localizer = new ErrorLocalizer(new LanguageFileProvider());
             localizer.LoadLanguage("en");
 
 
@@ -28,10 +32,8 @@ namespace SqlBuilder
             var postgresQueryResult = (new QueryCompiler(new PostgreQueryDecomposer())).Compile(query);
             var postgresConnection = $"Host=localhost;Username={new PostgresUsernamePass().GetUserInfo()};Password={new PostgresUsernamePass().GetPassInfo()};Database=mohaymen";
 
-            var NpgSqlexecutorConnection = new NpgSqlExecutorConnection();
-            var NpgSqlexecutorPrintResult = new NpgSqlExecutorPrintResult();
-            var NpgSqlexecutorAddParameter = new NpgSqlExecutorAddParameter();
-            var NpgSql = new NpgsqlExecutor(NpgSqlexecutorConnection, NpgSqlexecutorPrintResult, NpgSqlexecutorAddParameter);
+
+            var NpgSql = new NpgsqlExecutor(new NpgSqlExecutorConnection(), new NpgSqlExecutorPrintResult(), new NpgSqlExecutorAddParameter(), new NpgSqlCommandExecutor());
 
             Console.WriteLine($"{"PostgreSQL"}\nSQL: {postgresQueryResult.RawQuery}\nBindings: [{string.Join(", ", postgresQueryResult.Bindings)}]");
             Console.WriteLine($"{"PostgreSQL"}");
@@ -52,10 +54,8 @@ namespace SqlBuilder
             var sqlServerQueryResult = (new QueryCompiler(new SqlServerQueryDecomposer())).Compile(query);
             var sqlServerConnection = $"Server=localhost;Database=mohaymen;User Id={new SqlServerUsernamePass().GetUserInfo()};Password={new SqlServerUsernamePass().GetPassInfo()};TrustServerCertificate=True;";
 
-            var SQLServerexecutorConnection = new SQLServerExecutorConnection();
-            var SQLServerexecutorPrintResult = new SQLServerExecutorPrintResult();
-            var SQLServerexecutorAddParameter = new SQLServerExecutorAddParameters();
-            var sqlServer = new SQLServerExecutor(SQLServerexecutorConnection, SQLServerexecutorPrintResult, SQLServerexecutorAddParameter);
+
+            var sqlServer = new SQLServerExecutor(new SQLServerExecutorConnection(), new SQLServerExecutorPrintResult(), new SQLServerExecutorAddParameters(), new SqlServerCommandExecutor());
 
             Console.WriteLine($"{"SQL Server"}");
             try

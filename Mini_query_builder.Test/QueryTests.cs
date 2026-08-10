@@ -4,7 +4,7 @@ using SqlBuilder.Querying;
 using System.Linq;
 using FluentAssertions;
 
-namespace SqlBuilder.Tests
+namespace SqlBuilder.Tests.Querying
 {
     public class QueryTests
     {
