@@ -10,7 +10,6 @@ using FluentAssertions;
 
 namespace Mini_query_builder.Tests.Executors
 {
-
     public class SQLServerExecutorTests
     {
         private readonly ISQLServerExecutorConnection _executorConnection = Substitute.For<ISQLServerExecutorConnection>();

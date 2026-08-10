@@ -19,7 +19,6 @@ namespace SqlBuilder
     {
         static void Main()
         {
-
             var localizer = new ErrorLocalizer(new LanguageFileProvider());
             localizer.LoadLanguage("en");
 
@@ -32,7 +31,6 @@ namespace SqlBuilder
 
             var postgresQueryResult = (new QueryCompiler(new PostgreQueryDecomposer())).Compile(query);
             var postgresConnection = $"Host=localhost;Username={new PostgresUsernamePass().GetUserInfo()};Password={new PostgresUsernamePass().GetPassInfo()};Database=mohaymen";
-
 
             var NpgSql = new NpgsqlExecutor(new NpgSqlExecutorConnection(), new NpgSqlExecutorPrintResult(), new NpgSqlExecutorAddParameter(), new NpgSqlCommandExecutor());
 
@@ -54,7 +52,6 @@ namespace SqlBuilder
 
             var sqlServerQueryResult = (new QueryCompiler(new SqlServerQueryDecomposer())).Compile(query);
             var sqlServerConnection = $"Server=localhost;Database=mohaymen;User Id={new SqlServerUsernamePass().GetUserInfo()};Password={new SqlServerUsernamePass().GetPassInfo()};TrustServerCertificate=True;";
-
 
             var sqlServer = new SQLServerExecutor(new SQLServerExecutorConnection(), new SQLServerExecutorPrintResult(), new SQLServerExecutorAddParameters(), new SqlServerCommandExecutor());
 

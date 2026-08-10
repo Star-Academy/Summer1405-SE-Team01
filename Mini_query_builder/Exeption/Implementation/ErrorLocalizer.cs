@@ -10,12 +10,10 @@ namespace SqlBuilder.Exeption.Implementations
     {
         private readonly ILanguageFileProvider _fileProvider;
         private Dictionary<string, string> _messages = [];
-
         public ErrorLocalizer(ILanguageFileProvider fileProvider)
         {
             _fileProvider = fileProvider;
         }
-
         public void LoadLanguage(string languageCode)
         {
             var filePath = $"Exeption/Json/errors.{languageCode}.json";
@@ -45,7 +43,6 @@ namespace SqlBuilder.Exeption.Implementations
                 Console.WriteLine($"[Error] Permission denied reading language file: {ex.Message}");
             }
         }
-
         public string GetMessageValue(string key)
         {
             return _messages.TryGetValue(key, out string? message) ? message : $"[{key}]";

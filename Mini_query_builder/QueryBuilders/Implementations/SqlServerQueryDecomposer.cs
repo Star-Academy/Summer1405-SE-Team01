@@ -16,7 +16,6 @@ namespace SqlBuilder.QueryBuilders.Implementations
                 : "*";
             return $"SELECT {columnsString}";
         }
-
         public string fromClause(Query query)
         {
             if (string.IsNullOrWhiteSpace(query.Context.TableName))
@@ -25,7 +24,6 @@ namespace SqlBuilder.QueryBuilders.Implementations
             }
             return $"FROM [{query.Context.TableName}]";
         }
-
         public CompileResult whereClause(Query query)
         {
             var result = new CompileResult();

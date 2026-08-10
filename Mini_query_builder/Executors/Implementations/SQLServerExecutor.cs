@@ -5,7 +5,6 @@ using SqlBuilder.Executors.Abstractions;
 using SqlBuilder.Querying;
 using SqlBuilder.ResultRecords;
 
-
 namespace SqlBuilder.Executors.Implementations
 {
     internal sealed class SQLServerExecutor : ISQLServerExecutor
@@ -19,7 +18,7 @@ namespace SqlBuilder.Executors.Implementations
             ISQLServerExecutorConnection executorConnection,
             ISQLServerExecutorPrintResult executorPrintResult,
             ISQLServerExecutorAddParameters executorAddParameter,
-            ISqlServerCommandExecutor commandExecutor) 
+            ISqlServerCommandExecutor commandExecutor)
         {
             this.executorConnection = executorConnection;
             this.executorPrintResult = executorPrintResult;

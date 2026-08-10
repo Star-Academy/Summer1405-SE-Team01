@@ -9,7 +9,6 @@ using Xunit;
 
 namespace Mini_query_builder.Tests.QueryBuilders
 {
-
     public class QueryCompilerTests
     {
         private readonly IQueryDecomposer _decomposer = Substitute.For<IQueryDecomposer>();

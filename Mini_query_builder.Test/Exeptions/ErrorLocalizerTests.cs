@@ -10,7 +10,6 @@ using NSubstitute.ExceptionExtensions;
 
 namespace Mini_query_builder.Tests.Exption
 {
-
     public class ErrorLocalizerTests
     {
         private readonly ILanguageFileProvider _fileProvider = Substitute.For<ILanguageFileProvider>();

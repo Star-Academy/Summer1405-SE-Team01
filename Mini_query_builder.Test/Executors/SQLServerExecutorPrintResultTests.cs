@@ -8,7 +8,6 @@ using Xunit;
 
 namespace Mini_query_builder.Tests.Executors
 {
-
     public class SQLServerExecutorPrintResultTests
     {
         private readonly SQLServerExecutorPrintResult _sut = new();

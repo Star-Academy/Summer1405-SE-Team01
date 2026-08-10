@@ -9,7 +9,6 @@ using Xunit;
 
 namespace Mini_query_builder.Tests.QueryBuilders
 {
-
     public class SqlServerQueryDecomposerTests
     {
         private readonly SqlServerQueryDecomposer _sut;
@@ -17,7 +16,6 @@ namespace Mini_query_builder.Tests.QueryBuilders
         {
             _sut = new SqlServerQueryDecomposer();
         }
-
 
         [Fact]
         public void SelectClause_Should_ReturnWildcard_WhenNoColumnsAreSelected()
@@ -74,7 +72,6 @@ namespace Mini_query_builder.Tests.QueryBuilders
             // Assert
             act.Should().Throw<ArgumentException>();
         }
-
 
         [Fact]
         public void FromClause_Should_ReturnBracketedTableName_WhenTableNameIsSet()
@@ -176,6 +173,7 @@ namespace Mini_query_builder.Tests.QueryBuilders
                 Bindings = [0]
             });
         }
+
         [Fact]
         public void WhereClause_Should_HandleNullValueCorrectly_WhenConditionValueIsNull()
         {

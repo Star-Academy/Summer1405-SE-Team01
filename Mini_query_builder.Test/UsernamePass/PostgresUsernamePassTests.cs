@@ -1,4 +1,3 @@
-// PostgresUsernamePassTests.cs
 using System;
 using SqlBuilder;
 using SqlBuilder.UsernamePass.Implementations;
@@ -8,7 +7,6 @@ using FluentAssertions;
 
 namespace Mini_query_builder.Tests.UsernamePass
 {
-
     public class PostgresUsernamePassTests : IDisposable
     {
         private const string UsernameVar = "PG_USERNAME";

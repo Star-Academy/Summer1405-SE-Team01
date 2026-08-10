@@ -8,7 +8,6 @@ using Xunit;
 
 namespace Mini_query_builder.Tests.Executors
 {
-
     public class NpgSqlExecutorPrintResultTests
     {
         private readonly NpgSqlExecutorPrintResult _sut = new();

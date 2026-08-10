@@ -19,17 +19,17 @@ namespace SqlBuilder.QueryBuilders.Implementations
         public CompileResult Compile(Query query)
         {
             ArgumentNullException.ThrowIfNull(query);
-            
+
             var result = new CompileResult();
             var selectPart = parameters.selectClause(query);
             var fromPart = parameters.fromClause(query);
             var wherePart = parameters.whereClause(query);
-            
+
             var sql_query_string = $"{selectPart} {fromPart} {wherePart?.RawQuery}".TrimEnd();
-            
+
             result.Bindings = wherePart?.Bindings ?? [];
             result.RawQuery = sql_query_string;
-            
+
             return result;
         }
     }

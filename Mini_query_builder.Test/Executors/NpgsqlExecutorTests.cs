@@ -1,4 +1,3 @@
-// NpgsqlExecutorTests.cs
 using System.Data;
 using Npgsql;
 using SqlBuilder.Executors.Abstractions;

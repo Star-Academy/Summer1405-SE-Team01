@@ -9,7 +9,6 @@ namespace SqlBuilder.Tests.Querying
     public class QueryTests
     {
         private readonly Query _sut;
-
         public QueryTests()
         {
             _sut = new Query();
@@ -128,13 +127,13 @@ namespace SqlBuilder.Tests.Querying
                 .Where("IsActive", true);
 
             // Assert
-            
+
             result.Should().BeSameAs(_sut);
             _sut.Context.TableName.Should().Be("Products");
             _sut.Context.SelectedColumns.Should().HaveCount(2)
-                .And.ContainInOrder("Name", "Price"); 
+                .And.ContainInOrder("Name", "Price");
             _sut.Context.Conditions.Should().ContainSingle()
-                .Which.Should().Be(("IsActive", (object)true)); 
+                .Which.Should().Be(("IsActive", (object)true));
         }
     }
 }

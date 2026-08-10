@@ -9,7 +9,6 @@ using Xunit;
 
 namespace Mini_query_builder.Tests.Executors
 {
-
     public class NpgSqlExecutorAddParameterTests
     {
         private readonly NpgSqlExecutorAddParameter _sut = new();

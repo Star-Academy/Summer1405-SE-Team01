@@ -4,7 +4,6 @@ using Npgsql;
 using SqlBuilder.Executors.Abstractions;
 using System.Data;
 
-
 namespace SqlBuilder.Executors.Implementations
 {
     internal sealed class NpgSqlExecutorPrintResult : INpgSqlExecutorPrintResult

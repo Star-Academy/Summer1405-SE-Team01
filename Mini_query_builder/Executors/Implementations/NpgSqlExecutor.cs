@@ -4,9 +4,7 @@ using Npgsql;
 using SqlBuilder.Executors.Abstractions;
 using SqlBuilder.Querying;
 using SqlBuilder.ResultRecords;
-using System.Data;  
-
-
+using System.Data;
 
 namespace SqlBuilder.Executors.Implementations
 {

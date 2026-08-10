@@ -12,7 +12,7 @@ namespace Mini_query_builder.Tests.QueryBuilders
     public class PostgreQueryDecomposerTests
     {
         private readonly PostgreQueryDecomposer _sut;
-        
+
         public PostgreQueryDecomposerTests()
         {
             _sut = new PostgreQueryDecomposer();
