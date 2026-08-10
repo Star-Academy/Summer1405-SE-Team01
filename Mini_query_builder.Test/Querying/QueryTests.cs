@@ -4,7 +4,7 @@ using SqlBuilder.Querying;
 using System.Linq;
 using FluentAssertions;
 
-namespace SqlBuilder.Tests.Querying
+namespace Mini_query_builder.Tests.Querying
 {
     public class QueryTests
     {
@@ -64,7 +64,7 @@ namespace SqlBuilder.Tests.Querying
             Action act = () => _sut.Select(invalidColumns);
 
             // Act
-            //ََ Assert
+            // Assert
             act.Should().Throw<ArgumentException>();
         }
         public static IEnumerable<object[]> InvalidColumnsData =>
@@ -127,7 +127,6 @@ namespace SqlBuilder.Tests.Querying
                 .Where("IsActive", true);
 
             // Assert
-
             result.Should().BeSameAs(_sut);
             _sut.Context.TableName.Should().Be("Products");
             _sut.Context.SelectedColumns.Should().HaveCount(2)

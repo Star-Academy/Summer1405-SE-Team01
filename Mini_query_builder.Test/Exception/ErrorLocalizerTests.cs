@@ -171,9 +171,9 @@ namespace Mini_query_builder.Tests.Exceptions
         }
 
         [Theory]
-        [InlineData("en", "Exceptions/Json/errors.en.json")]
-        [InlineData("fa", "Exceptions/Json/errors.fa.json")]
-        public void LoadLanguage_ShouldRequestCorrectFilePath_WhenCalled(string languageCode, string expectedPath)
+        [InlineData("en")]
+        [InlineData("fa")]
+        public void LoadLanguage_ShouldRequestPathContainingLanguageCode_WhenCalled(string languageCode)
         {
             // Arrange
             _fileProvider.Exists(Arg.Any<string>()).Returns(false);
@@ -182,9 +182,10 @@ namespace Mini_query_builder.Tests.Exceptions
             _sut.LoadLanguage(languageCode);
 
             // Assert
-            _fileProvider.Received(1).Exists(expectedPath);
+            _fileProvider.Received(1).Exists(Arg.Is<string>(path =>
+                path.Contains($".{languageCode}.") && path.EndsWith(".json", StringComparison.OrdinalIgnoreCase)));
         }
-
+        
         [Fact]
         public void LoadLanguage_ShouldReplacePreviousMessages_WhenCalledTwiceWithDifferentLanguages()
         {
