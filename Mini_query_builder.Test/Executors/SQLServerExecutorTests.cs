@@ -28,7 +28,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void ExecuteOnSqlServer_Should_OpenTheConnection_When_Called()
+        public void ExecuteOnSqlServer_ShouldOpenTheConnection_WhenCalled()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object>() };
@@ -41,7 +41,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void ExecuteOnSqlServer_Should_AddParametersToTheCommand_When_Called()
+        public void ExecuteOnSqlServer_ShouldAddParametersToTheCommand_WhenCalled()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object> { 1 } };
@@ -54,7 +54,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void ExecuteOnSqlServer_Should_ExecuteTheCommand_When_Called()
+        public void ExecuteOnSqlServer_ShouldExecuteTheCommand_WhenCalled()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object>() };
@@ -67,7 +67,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void ExecuteOnSqlServer_Should_PrintTheReaderReturnedByCommandExecutor_When_Called()
+        public void ExecuteOnSqlServer_ShouldPrintTheReaderReturnedByCommandExecutor_WhenCalled()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object>() };

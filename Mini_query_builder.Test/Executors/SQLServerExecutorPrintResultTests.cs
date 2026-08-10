@@ -13,7 +13,7 @@ namespace Mini_query_builder.Tests.Executors
         private readonly SQLServerExecutorPrintResult _sut = new();
 
         [Fact]
-        public void PrintQueryResult_Should_ReturnEmptyList_When_ReaderHasNoRows()
+        public void PrintQueryResult_ShouldReturnEmptyList_WhenReaderHasNoRows()
         {
             // Arrange
             var table = new DataTable();
@@ -28,7 +28,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void PrintQueryResult_Should_ReturnOneFormattedLine_When_ReaderHasOneRow()
+        public void PrintQueryResult_ShouldReturnOneFormattedLine_WhenReaderHasOneRow()
         {
             // Arrange
             var table = new DataTable();
@@ -45,7 +45,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void PrintQueryResult_Should_ReturnOneLinePerRow_When_ReaderHasMultipleRows()
+        public void PrintQueryResult_ShouldReturnOneLinePerRow_WhenReaderHasMultipleRows()
         {
             // Arrange
             var table = new DataTable();

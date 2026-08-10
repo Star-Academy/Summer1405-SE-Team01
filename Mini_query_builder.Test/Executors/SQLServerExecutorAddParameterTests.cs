@@ -15,7 +15,7 @@ namespace Mini_query_builder.Tests.Executors
         private readonly SQLServerExecutorAddParameters _sut = new();
 
         [Fact]
-        public void AddParameters_Should_NotAddAnyParameter_When_BindingsIsEmpty()
+        public void AddParameters_ShouldNotAddAnyParameter_WhenBindingsIsEmpty()
         {
             // Arrange
             using var command = new SqlCommand();
@@ -29,7 +29,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void AddParameters_Should_NameParametersSequentiallyStartingFromP1_When_BindingsHasMultipleValues()
+        public void AddParameters_ShouldNameParametersSequentiallyStartingFromP1_WhenBindingsHasMultipleValues()
         {
             // Arrange
             using var command = new SqlCommand();
@@ -44,7 +44,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void AddParameters_Should_AssignBindingValuesToParametersInOrder_When_BindingsHasMultipleValues()
+        public void AddParameters_ShouldAssignBindingValuesToParametersInOrder_WhenBindingsHasMultipleValues()
         {
             // Arrange
             using var command = new SqlCommand();
@@ -59,7 +59,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void AddParameters_Should_ReturnSameCommandInstance_When_Called()
+        public void AddParameters_ShouldReturnSameCommandInstance_WhenCalled()
         {
             // Arrange
             using var command = new SqlCommand();

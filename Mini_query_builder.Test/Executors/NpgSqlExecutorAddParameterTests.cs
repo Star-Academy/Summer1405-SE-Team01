@@ -14,7 +14,7 @@ namespace Mini_query_builder.Tests.Executors
         private readonly NpgSqlExecutorAddParameter _sut = new();
 
         [Fact]
-        public void AddParameters_Should_NotAddAnyParameter_When_BindingsIsEmpty()
+        public void AddParameters_ShouldNotAddAnyParameter_WhenBindingsIsEmpty()
         {
             // Arrange
             using var command = new NpgsqlCommand();
@@ -29,7 +29,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void AddParameters_Should_AddOneParameter_When_BindingsHasOneValue()
+        public void AddParameters_ShouldAddOneParameter_WhenBindingsHasOneValue()
         {
             // Arrange
             using var command = new NpgsqlCommand();
@@ -45,7 +45,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void AddParameters_Should_AddParametersInBindingsOrder_When_BindingsHasMultipleValues()
+        public void AddParameters_ShouldAddParametersInBindingsOrder_WhenBindingsHasMultipleValues()
         {
             // Arrange
             using var command = new NpgsqlCommand();
@@ -60,7 +60,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void AddParameters_Should_ReturnSameCommandInstance_When_Called()
+        public void AddParameters_ShouldReturnSameCommandInstance_WhenCalled()
         {
             // Arrange
             using var command = new NpgsqlCommand();

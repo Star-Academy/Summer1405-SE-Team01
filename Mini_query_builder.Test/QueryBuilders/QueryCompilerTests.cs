@@ -60,7 +60,7 @@ namespace Mini_query_builder.Tests.QueryBuilders
         }
 
         [Fact]
-        public void Compile_ShouldCallSelectClauseAndFromClauseExactlyOnce_WhenInvoked()
+        public void Compile_ShouldCallSelectClauseAndFromClauseExactlyOnce_WheneverInvoked()
         {
             // Arrange
             var query = new Query().From("Student");

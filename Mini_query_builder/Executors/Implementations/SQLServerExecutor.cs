@@ -25,7 +25,7 @@ namespace SqlBuilder.Executors.Implementations
             this.executorAddParameter = executorAddParameter;
             this.commandExecutor = commandExecutor;
         }
-        public void ExecuteOnSqlServer(CompileResult result, string connectionString)
+        public string ExecuteOnSqlServer(CompileResult result, string connectionString)
         {
             using var connection = new SqlConnection(connectionString);
             executorConnection.OpeningConnection(connection);
@@ -36,7 +36,7 @@ namespace SqlBuilder.Executors.Implementations
             using var reader = commandExecutor.ExecuteReader(command);
 
             var ResultData = executorPrintResult.PrintQueryResult(reader);
-            Console.WriteLine(string.Join("\n", ResultData));
+            return string.Join("\n", ResultData);
         }
     }
 }

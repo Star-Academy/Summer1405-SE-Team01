@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Npgsql;
-using SqlBuilder.Executors.Abstractions;
 using System.Data;
+using SqlBuilder.Executors.Abstractions;
 
 namespace SqlBuilder.Executors.Implementations
 {
@@ -10,23 +9,28 @@ namespace SqlBuilder.Executors.Implementations
     {
         public List<string> PrintQueryResult(IDataReader reader)
         {
-            var ResultDataPrint = new List<string>();
+            ArgumentNullException.ThrowIfNull(reader, nameof(reader));
+
+            var resultDataPrint = new List<string>();
+
             while (reader.Read())
             {
-
-                var RowData = new List<string>();
+                var rowData = new List<string>();
 
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
                     var columnName = reader.GetName(i);
-
                     var value = reader.GetValue(i);
 
-                    RowData.Add($"{columnName}: {value}");
+                    var displayValue = value is DBNull or null ? string.Empty : value.ToString();
+
+                    rowData.Add($"{columnName}: {displayValue}");
                 }
-                ResultDataPrint.Add(string.Join(" | ", RowData));
+
+                resultDataPrint.Add(string.Join(" | ", rowData));
             }
-            return ResultDataPrint;
+
+            return resultDataPrint;
         }
     }
 }

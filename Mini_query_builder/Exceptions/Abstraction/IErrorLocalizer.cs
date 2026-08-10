@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using SqlBuilder.Exeption.Implementations;
+using SqlBuilder.Exceptions.Implementations;
 
-namespace SqlBuilder.Exeption.Abstractions
+namespace SqlBuilder.Exceptions.Abstractions
 {
     public interface IErrorLocalizer
     {

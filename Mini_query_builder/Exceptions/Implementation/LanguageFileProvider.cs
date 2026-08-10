@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using SqlBuilder.Exeption.Abstractions;
+using SqlBuilder.Exceptions.Abstractions;
 
-namespace SqlBuilder.Exeption.Implementations
+namespace SqlBuilder.Exceptions.Implementations
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class LanguageFileProvider : ILanguageFileProvider

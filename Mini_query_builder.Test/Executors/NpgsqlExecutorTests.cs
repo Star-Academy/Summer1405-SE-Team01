@@ -27,7 +27,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void ExecuteOnPostgres_Should_OpenTheConnection_When_Called()
+        public void ExecuteOnPostgres_ShouldOpenTheConnection_WhenCalled()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object>() };
@@ -40,7 +40,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void ExecuteOnPostgres_Should_AddParametersToTheCommand_When_Called()
+        public void ExecuteOnPostgres_ShouldAddParametersToTheCommand_WhenCalled()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object> { 1 } };
@@ -53,7 +53,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void ExecuteOnPostgres_Should_ExecuteTheCommand_When_Called()
+        public void ExecuteOnPostgres_ShouldExecuteTheCommand_WhenCalled()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object>() };
@@ -66,7 +66,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void ExecuteOnPostgres_Should_ReturnJoinedResultLines_When_PrintResultReturnsMultipleLines()
+        public void ExecuteOnPostgres_ShouldReturnJoinedResultLines_WhenPrintResultReturnsMultipleLines()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object>() };

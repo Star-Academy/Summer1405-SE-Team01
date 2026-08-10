@@ -9,8 +9,8 @@ using SqlBuilder.QueryBuilders.Implementations;
 using SqlBuilder.QueryBuilders.Abstractions;
 using SqlBuilder.UsernamePass.Implementations;
 using SqlBuilder.UsernamePass.Abstractions;
-using SqlBuilder.Exeption.Implementations;
-using SqlBuilder.Exeption.Abstractions;
+using SqlBuilder.Exceptions.Implementations;
+using SqlBuilder.Exceptions.Abstractions;
 
 namespace SqlBuilder
 {
@@ -34,12 +34,11 @@ namespace SqlBuilder
 
             var NpgSql = new NpgsqlExecutor(new NpgSqlExecutorConnection(), new NpgSqlExecutorPrintResult(), new NpgSqlExecutorAddParameter(), new NpgSqlCommandExecutor());
 
-            Console.WriteLine($"{"PostgreSQL"}\nSQL: {postgresQueryResult.RawQuery}\nBindings: [{string.Join(", ", postgresQueryResult.Bindings)}]");
-            Console.WriteLine($"{"PostgreSQL"}");
+            Console.WriteLine($"{"PostgreSQL"}\nSQL:{postgresQueryResult.RawQuery}\nBindings: [{string.Join(", ", postgresQueryResult.Bindings)}]");
             try
             {
                 Console.WriteLine(NpgSql.ExecuteOnPostgres(postgresQueryResult, postgresConnection));
-                Console.WriteLine($" Execution Successful!\n");
+                Console.WriteLine($"Execution Successful!\n");
             }
             catch (DbException ex)
             {
@@ -55,11 +54,12 @@ namespace SqlBuilder
 
             var sqlServer = new SQLServerExecutor(new SQLServerExecutorConnection(), new SQLServerExecutorPrintResult(), new SQLServerExecutorAddParameters(), new SqlServerCommandExecutor());
 
-            Console.WriteLine($"{"SQL Server"}");
+            Console.WriteLine($"{"SQL Server"}\nSQL:{sqlServerQueryResult.RawQuery}\nBindings: [{string.Join(", ", sqlServerQueryResult.Bindings)}]");
+
             try
             {
-                sqlServer.ExecuteOnSqlServer(sqlServerQueryResult, sqlServerConnection);
-                Console.WriteLine($" Execution Successful!\n");
+                Console.WriteLine(sqlServer.ExecuteOnSqlServer(sqlServerQueryResult, sqlServerConnection));
+                Console.WriteLine($"Execution Successful!\n");
             }
             catch (DbException ex)
             {

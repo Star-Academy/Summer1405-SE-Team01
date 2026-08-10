@@ -2,27 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using SqlBuilder.Exeption.Abstractions;
+using SqlBuilder.Exceptions.Abstractions;
 
-namespace SqlBuilder.Exeption.Implementations
+namespace SqlBuilder.Exceptions.Implementations
 {
     internal sealed class ErrorLocalizer : IErrorLocalizer
     {
         private readonly ILanguageFileProvider _fileProvider;
-        private Dictionary<string, string> _messages = [];
+        private Dictionary<string, string> _messages = new();
+
         public ErrorLocalizer(ILanguageFileProvider fileProvider)
         {
             _fileProvider = fileProvider;
         }
+
         public void LoadLanguage(string languageCode)
         {
-            var filePath = $"Exeption/Json/errors.{languageCode}.json";
+            var filePath = $"Exceptions/Json/errors.{languageCode}.json";
 
             if (!_fileProvider.Exists(filePath))
             {
                 Console.WriteLine($"[Warning] Language file not found: {filePath}");
                 return;
             }
+
             try
             {
                 var jsonString = _fileProvider.ReadAllText(filePath);
@@ -43,6 +46,7 @@ namespace SqlBuilder.Exeption.Implementations
                 Console.WriteLine($"[Error] Permission denied reading language file: {ex.Message}");
             }
         }
+
         public string GetMessageValue(string key)
         {
             return _messages.TryGetValue(key, out string? message) ? message : $"[{key}]";

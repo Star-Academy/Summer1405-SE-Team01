@@ -9,6 +9,6 @@ namespace SqlBuilder.Executors.Abstractions
 {
     public interface ISQLServerExecutor
     {
-        void ExecuteOnSqlServer(CompileResult result, string connectionString);
+        string ExecuteOnSqlServer(CompileResult result, string connectionString);
     }
 }

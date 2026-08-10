@@ -13,7 +13,7 @@ namespace Mini_query_builder.Tests.Executors
         private readonly NpgSqlExecutorPrintResult _sut = new();
 
         [Fact]
-        public void PrintQueryResult_Should_ReturnEmptyList_When_ReaderHasNoRows()
+        public void PrintQueryResult_ShouldReturnEmptyList_WhenReaderHasNoRows()
         {
             var table = new DataTable();
             table.Columns.Add("Id", typeof(int));
@@ -25,7 +25,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void PrintQueryResult_Should_ReturnOneFormattedLine_When_ReaderHasOneRow()
+        public void PrintQueryResult_ShouldReturnOneFormattedLine_WhenReaderHasOneRow()
         {
             var table = new DataTable();
             table.Columns.Add("Id", typeof(int));
@@ -39,7 +39,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void PrintQueryResult_Should_ReturnOneLinePerRow_When_ReaderHasMultipleRows()
+        public void PrintQueryResult_ShouldReturnOneLinePerRow_WhenReaderHasMultipleRows()
         {
             var table = new DataTable();
             table.Columns.Add("Id", typeof(int));
@@ -53,7 +53,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void PrintQueryResult_Should_HandleDbNullValues_When_ReaderContainsNull()
+        public void PrintQueryResult_ShouldHandleDbNullValues_WhenReaderContainsNull()
         {
             // Arrange
             var table = new DataTable();
@@ -67,6 +67,19 @@ namespace Mini_query_builder.Tests.Executors
 
             // Assert
             result.Should().Equal("Id: 1 | Name: ");
+        }
+        [Fact]
+        public void PrintQueryResult_ShouldThrowArgumentNullException_WhenReaderIsNull()
+        {
+            // Arrange
+            IDataReader reader = null!;
+
+            // Act
+            var act = () => _sut.PrintQueryResult(reader);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>()
+            .WithParameterName("reader");
         }
     }
 }
