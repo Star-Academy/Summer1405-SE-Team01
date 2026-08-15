@@ -5,8 +5,6 @@ using SqlBuilder.Executors.Abstractions;
 using SqlBuilder.Querying;
 using SqlBuilder.ResultRecords;
 
-
-
 namespace SqlBuilder.Executors.Implementations
 {
     internal sealed class NpgSqlExecutorAddParameter : INpgSqlExecutorAddParameter

@@ -1,0 +1,7 @@
+{
+  "DatabaseTimeout": "The database operation took too long.",
+  "ConnectionFailed": "Failed to connect to the database.",
+  "InvalidQuery": "The provided SQL query is invalid.",
+  "EmptyTableName": "Table name cannot be null or empty.",
+  "EmptyColumnName": "Column names cannot be null or whitespace."
+}

@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "RNkYuMCF1Oo=",
+  "success": true,
+  "projectFilePath": "/Users/alfa/Downloads/Summer1405-SE-Team01/mohaymen.csproj",
+  "expectedPackageFiles": [
+    "/Users/alfa/.nuget/packages/system.text.json/10.0.10/system.text.json.10.0.10.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1510",
+      "level": "Warning",
+      "message": "PackageReference System.Text.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.",
+      "projectPath": "/Users/alfa/Downloads/Summer1405-SE-Team01/mohaymen.csproj",
+      "warningLevel": 1,
+      "filePath": "/Users/alfa/Downloads/Summer1405-SE-Team01/mohaymen.csproj",
+      "libraryId": "System.Text.Json",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
+}

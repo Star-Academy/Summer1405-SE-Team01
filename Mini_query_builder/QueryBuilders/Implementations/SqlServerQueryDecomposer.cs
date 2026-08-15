@@ -7,7 +7,8 @@ using SqlBuilder.QueryBuilders.Abstractions;
 
 namespace SqlBuilder.QueryBuilders.Implementations
 {
-    internal sealed class SqlServerQueryDecomposer : IQueryDecomposer {
+    internal sealed class SqlServerQueryDecomposer : IQueryDecomposer
+    {
         public string selectClause(Query query)
         {
             var columnsString = query.Context.SelectedColumns.Count > 0
@@ -15,12 +16,14 @@ namespace SqlBuilder.QueryBuilders.Implementations
                 : "*";
             return $"SELECT {columnsString}";
         }
-        
         public string fromClause(Query query)
         {
+            if (string.IsNullOrWhiteSpace(query.Context.TableName))
+            {
+                throw new ArgumentException("Table name cannot be null or empty.", nameof(query));
+            }
             return $"FROM [{query.Context.TableName}]";
         }
-
         public CompileResult whereClause(Query query)
         {
             var result = new CompileResult();
@@ -28,19 +31,26 @@ namespace SqlBuilder.QueryBuilders.Implementations
             {
                 var whereClauses = new List<string>();
                 int paramIndex = 1;
-                
+
                 foreach (var condition in query.Context.Conditions)
                 {
-                    whereClauses.Add($"[{condition.Column}] = @p{paramIndex}");
-
                     var value = condition.Value;
-                    if (value is bool boolValue)
+                    
+                    if (value == null)
                     {
-                        value = boolValue ? 1 : 0;
+                        whereClauses.Add($"[{condition.Column}] IS NULL");
                     }
-    
-                    result.Bindings.Add(value);
-                    paramIndex++;
+                    else
+                    {
+                        if (value is bool boolValue)
+                        {
+                            value = boolValue ? 1 : 0;
+                        }
+
+                        whereClauses.Add($"[{condition.Column}] = @p{paramIndex}");
+                        result.Bindings.Add(value);
+                        paramIndex++;
+                    }
                 }
                 result.RawQuery = " WHERE " + string.Join(" AND ", whereClauses);
             }

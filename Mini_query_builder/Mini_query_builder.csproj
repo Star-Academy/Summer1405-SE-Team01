@@ -18,5 +18,9 @@
   </None>
 </ItemGroup>
 
+<ItemGroup>
+  <InternalsVisibleTo Include="Mini_query_builder.Test" />
+</ItemGroup>
+
 
 </Project>

@@ -4,8 +4,7 @@ using Npgsql;
 using SqlBuilder.Executors.Abstractions;
 using SqlBuilder.Querying;
 using SqlBuilder.ResultRecords;
-
-
+using System.Data;
 
 namespace SqlBuilder.Executors.Implementations
 {
@@ -14,11 +13,13 @@ namespace SqlBuilder.Executors.Implementations
         public INpgSqlExecutorConnection executorConnection;
         public INpgSqlExecutorPrintResult executorPrintResult;
         public INpgSqlExecutorAddParameter executorAddParameter;
-        public NpgsqlExecutor(INpgSqlExecutorConnection executorConnection, INpgSqlExecutorPrintResult executorPrintResult, INpgSqlExecutorAddParameter executorAddParameter)
+        public INpgSqlCommandExecutor commandExecutor;
+        public NpgsqlExecutor(INpgSqlExecutorConnection executorConnection, INpgSqlExecutorPrintResult executorPrintResult, INpgSqlExecutorAddParameter executorAddParameter, INpgSqlCommandExecutor commandExecutor)
         {
             this.executorConnection = executorConnection;
             this.executorPrintResult = executorPrintResult;
             this.executorAddParameter = executorAddParameter;
+            this.commandExecutor = commandExecutor;
         }
         public string ExecuteOnPostgres(CompileResult result, string connectionString)
         {
@@ -29,7 +30,7 @@ namespace SqlBuilder.Executors.Implementations
 
             executorAddParameter.AddParameters(command, result);
 
-            using var reader = command.ExecuteReader();
+            using var reader = commandExecutor.ExecuteReader(command);
 
             var ResultData = executorPrintResult.PrintQueryResult(reader);
 

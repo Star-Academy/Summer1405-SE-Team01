@@ -2,12 +2,13 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using SqlBuilder.Executors.Abstractions;
+using System.Data;
 
 namespace SqlBuilder.Executors.Implementations
 {
     internal sealed class SQLServerExecutorPrintResult : ISQLServerExecutorPrintResult
     {
-        public List<string> PrintQueryResult(SqlDataReader reader)
+        public List<string> PrintQueryResult(IDataReader reader)
         {
             var ResultDataPrint = new List<string>();
 

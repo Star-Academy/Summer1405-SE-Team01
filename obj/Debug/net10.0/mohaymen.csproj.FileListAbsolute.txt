@@ -1,0 +1,8 @@
+/Users/alfa/Downloads/Summer1405-SE-Team01/obj/Debug/net10.0/mohaymen.csproj.AssemblyReference.cache
+/Users/alfa/Downloads/Summer1405-SE-Team01/obj/Debug/net10.0/mohaymen.Messages.resources
+/Users/alfa/Downloads/Summer1405-SE-Team01/obj/Debug/net10.0/mohaymen.csproj.GenerateResource.cache
+/Users/alfa/Downloads/Summer1405-SE-Team01/obj/Debug/net10.0/mohaymen.GeneratedMSBuildEditorConfig.editorconfig
+/Users/alfa/Downloads/Summer1405-SE-Team01/obj/Debug/net10.0/mohaymen.AssemblyInfoInputs.cache
+/Users/alfa/Downloads/Summer1405-SE-Team01/obj/Debug/net10.0/mohaymen.AssemblyInfo.cs
+/Users/alfa/Downloads/Summer1405-SE-Team01/obj/Debug/net10.0/mohaymen.csproj.CoreCompileInputs.cache
+/Users/alfa/Downloads/Summer1405-SE-Team01/obj/Debug/net10.0/mohaymen.sourcelink.json
