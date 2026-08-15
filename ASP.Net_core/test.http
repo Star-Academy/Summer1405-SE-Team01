@@ -1,0 +1,198 @@
+﻿### 1. Get all students (PostgreSQL)
+GET http://localhost:5239/api/students?db=postgres
+
+### 2. Get all students (SQL Server)
+GET http://localhost:5239/api/students?db=sqlserver
+
+### 3. Create student - Success (PostgreSQL)
+POST http://localhost:5239/api/students?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "40110001",
+  "firstName": "Mehdi",
+  "lastName": "Ahmadi",
+  "isMale": true,
+  "grade": 18.5,
+  "dateOfBirth": "2005-05-15T00:00:00",
+  "leftUnitsCount": 12
+}
+
+### 4. Create student - Success (SQL Server)
+POST http://localhost:5239/api/students?db=sqlserver
+Content-Type: application/json
+
+{
+  "studentNumber": "40110002",
+  "firstName": "Sara",
+  "lastName": "Rezaei",
+  "isMale": false,
+  "grade": 19.25,
+  "dateOfBirth": "2004-03-20T00:00:00",
+  "leftUnitsCount": 10
+}
+
+### 5. Create - Duplicate Student Number (Expects 409 Conflict)
+POST http://localhost:5239/api/students?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "40110001",
+  "firstName": "Mehdi",
+  "lastName": "Duplicate",
+  "isMale": true,
+  "grade": 15.0,
+  "dateOfBirth": "2005-05-15T00:00:00",
+  "leftUnitsCount": 5
+}
+
+### 6. Create - Invalid Student Number Length (Expects 400)
+POST http://localhost:5239/api/students?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "123",
+  "firstName": "Ali",
+  "lastName": "Test",
+  "isMale": true,
+  "grade": 17.0,
+  "dateOfBirth": "2005-01-01T00:00:00",
+  "leftUnitsCount": 10
+}
+
+### 7. Create - First Name > 20 chars (Expects 400)
+POST http://localhost:5239/api/students?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "40110003",
+  "firstName": "ThisNameIsTooLongForTheDB",
+  "lastName": "Test",
+  "isMale": true,
+  "grade": 16.0,
+  "dateOfBirth": "2005-01-01T00:00:00",
+  "leftUnitsCount": 10
+}
+
+### 8. Create - Grade > 20 (Expects 400)
+POST http://localhost:5239/api/students?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "40110004",
+  "firstName": "Reza",
+  "lastName": "Test",
+  "isMale": true,
+  "grade": 22.5,
+  "dateOfBirth": "2005-01-01T00:00:00",
+  "leftUnitsCount": 10
+}
+
+### 9. Create - Grade < 0 (Expects 400)
+POST http://localhost:5239/api/students?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "40110005",
+  "firstName": "Mina",
+  "lastName": "Test",
+  "isMale": false,
+  "grade": -2.0,
+  "dateOfBirth": "2005-01-01T00:00:00",
+  "leftUnitsCount": 10
+}
+
+### 10. Get student by StudentNumber (PostgreSQL)
+GET http://localhost:5239/api/students/40110001?db=postgres
+
+### 11. Get student by StudentNumber (SQL Server)
+GET http://localhost:5239/api/students/40110002?db=sqlserver
+
+### 12. Update - Success (PostgreSQL)
+PUT http://localhost:5239/api/students/40110001?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "40110001",
+  "firstName": "Ahmad",
+  "lastName": "Ahmadi",
+  "isMale": true,
+  "grade": 19.75,
+  "dateOfBirth": "2005-05-15T00:00:00",
+  "leftUnitsCount": 12
+}
+
+### 13. Update - First Name > 20 chars (Expects 400)
+PUT http://localhost:5239/api/students/40110001?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "40110001",
+  "firstName": "ThisNameIsTooLongForTheDB",
+  "lastName": "Ahmadi",
+  "isMale": true,
+  "grade": 18.0,
+  "dateOfBirth": "2005-05-15T00:00:00",
+  "leftUnitsCount": 12
+}
+
+### 14. Update - Grade > 20 (Expects 400)
+PUT http://localhost:5239/api/students/40110001?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "40110001",
+  "firstName": "Ahmad",
+  "lastName": "Ahmadi",
+  "isMale": true,
+  "grade": 25.0,
+  "dateOfBirth": "2005-05-15T00:00:00",
+  "leftUnitsCount": 12
+}
+
+### 15. Update - Student Not Found (Expects 404)
+PUT http://localhost:5239/api/students/99999999?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "99999999",
+  "firstName": "Ghost",
+  "lastName": "Test",
+  "isMale": true,
+  "grade": 15.0,
+  "dateOfBirth": "2005-01-01T00:00:00",
+  "leftUnitsCount": 0
+}
+
+### 16. Delete - Success (PostgreSQL)
+DELETE http://localhost:5239/api/students/40110001?db=postgres
+
+### 17. Delete - Student Not Found (Expects 404)
+DELETE http://localhost:5239/api/students/99999999?db=postgres
+
+### 18. Invalid database parameter (Expects 400)
+GET http://localhost:5239/api/students?db=oracle
+
+### 19. Missing required fields (Expects 400)
+POST http://localhost:5239/api/students?db=postgres
+Content-Type: application/json
+
+{
+  "studentNumber": "40110006",
+  "isMale": true,
+  "grade": 18
+}
+
+### 20. Create on SQL Server
+POST http://localhost:5239/api/students?db=sqlserver
+Content-Type: application/json
+
+{
+  "studentNumber": "40110007",
+  "firstName": "Mehdi",
+  "lastName": "Test",
+  "isMale": true,
+  "grade": 15.0,
+  "dateOfBirth": "2005-01-01T00:00:00",
+  "leftUnitsCount": 10
+}
