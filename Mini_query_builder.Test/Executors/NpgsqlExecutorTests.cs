@@ -11,23 +11,23 @@ namespace Mini_query_builder.Tests.Executors
 {
     public class NpgsqlExecutorTests
     {
-        private readonly INpgSqlExecutorConnection _executorConnection = Substitute.For<INpgSqlExecutorConnection>();
-        private readonly INpgSqlExecutorPrintResult _executorPrintResult = Substitute.For<INpgSqlExecutorPrintResult>();
-        private readonly INpgSqlExecutorAddParameter _executorAddParameter = Substitute.For<INpgSqlExecutorAddParameter>();
-        private readonly INpgSqlCommandExecutor _commandExecutor = Substitute.For<INpgSqlCommandExecutor>();
-        private readonly IDataReader _fakeReader = Substitute.For<IDataReader>();
+        private readonly INpgSqlExecutorConnection _npgSqlExecutorConnection = Substitute.For<INpgSqlExecutorConnection>();
+        private readonly INpgSqlExecutorPrintResult _npgSqlExecutorPrintResult = Substitute.For<INpgSqlExecutorPrintResult>();
+        private readonly INpgSqlExecutorAddParameter _npgSqlExecutorAddParameter = Substitute.For<INpgSqlExecutorAddParameter>();
+        private readonly INpgSqlCommandExecutor _npgSqlCommandExecutor = Substitute.For<INpgSqlCommandExecutor>();
+        private readonly IDataReader _dataReader = Substitute.For<IDataReader>();
         private readonly NpgsqlExecutor _sut;
 
         public NpgsqlExecutorTests()
         {
-            _sut = new NpgsqlExecutor(_executorConnection, _executorPrintResult, _executorAddParameter, _commandExecutor);
+            _sut = new NpgsqlExecutor(_npgSqlExecutorConnection, _npgSqlExecutorPrintResult, _npgSqlExecutorAddParameter, _npgSqlCommandExecutor);
 
-            _commandExecutor.ExecuteReader(Arg.Any<NpgsqlCommand>()).Returns(_fakeReader);
-            _executorPrintResult.PrintQueryResult(Arg.Any<IDataReader>()).Returns(new List<string>());
+            _npgSqlCommandExecutor.ExecuteReader(Arg.Any<NpgsqlCommand>()).Returns(_dataReader);
+            _npgSqlExecutorPrintResult.PrintQueryResult(Arg.Any<IDataReader>()).Returns(new List<string>());
         }
 
         [Fact]
-        public void ExecuteOnPostgres_ShouldOpenTheConnection_WhenCalled()
+        public void ExecuteOnPostgres_ShouldOpenTheConnection_Whenever()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object>() };
@@ -36,11 +36,11 @@ namespace Mini_query_builder.Tests.Executors
             _sut.ExecuteOnPostgres(result, "Host=test;Database=test;");
 
             // Assert
-            _executorConnection.Received(1).OpenConnection(Arg.Any<NpgsqlConnection>());
+            _npgSqlExecutorConnection.Received(1).OpenConnection(Arg.Any<NpgsqlConnection>());
         }
 
         [Fact]
-        public void ExecuteOnPostgres_ShouldAddParametersToTheCommand_WhenCalled()
+        public void ExecuteOnPostgres_ShouldAddParametersToTheCommand_Whenever()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object> { 1 } };
@@ -49,11 +49,11 @@ namespace Mini_query_builder.Tests.Executors
             _sut.ExecuteOnPostgres(result, "Host=test;Database=test;");
 
             // Assert
-            _executorAddParameter.Received(1).AddParameters(Arg.Any<NpgsqlCommand>(), result);
+            _npgSqlExecutorAddParameter.Received(1).AddParameters(Arg.Any<NpgsqlCommand>(), result);
         }
 
         [Fact]
-        public void ExecuteOnPostgres_ShouldExecuteTheCommand_WhenCalled()
+        public void ExecuteOnPostgres_ShouldExecuteTheCommand_Whenever()
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object>() };
@@ -62,7 +62,7 @@ namespace Mini_query_builder.Tests.Executors
             _sut.ExecuteOnPostgres(result, "Host=test;Database=test;");
 
             // Assert
-            _commandExecutor.Received(1).ExecuteReader(Arg.Any<NpgsqlCommand>());
+            _npgSqlCommandExecutor.Received(1).ExecuteReader(Arg.Any<NpgsqlCommand>());
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace Mini_query_builder.Tests.Executors
         {
             // Arrange
             var result = new CompileResult { RawQuery = "SELECT 1", Bindings = new List<object>() };
-            _executorPrintResult.PrintQueryResult(Arg.Any<IDataReader>())
+            _npgSqlExecutorPrintResult.PrintQueryResult(Arg.Any<IDataReader>())
                 .Returns(new List<string> { "Id: 1", "Id: 2" });
 
             // Act

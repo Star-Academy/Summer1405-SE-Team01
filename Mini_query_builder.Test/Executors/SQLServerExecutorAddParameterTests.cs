@@ -29,7 +29,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void AddParameters_ShouldNameParametersSequentiallyStartingFromP1_WhenBindingsHasMultipleValues()
+        public void AddParameters_ShouldAssignSequentialPlaceholderNames_WhenBindingsHasMultipleValues()
         {
             // Arrange
             using var command = new SqlCommand();
@@ -59,7 +59,7 @@ namespace Mini_query_builder.Tests.Executors
         }
 
         [Fact]
-        public void AddParameters_ShouldReturnSameCommandInstance_WhenCalled()
+        public void AddParameters_ShouldReturnSameCommandInstance_Whenever()
         {
             // Arrange
             using var command = new SqlCommand();

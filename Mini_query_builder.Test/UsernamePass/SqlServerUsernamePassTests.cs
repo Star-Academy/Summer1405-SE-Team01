@@ -1,4 +1,3 @@
-// SqlServerUsernamePassTests.cs
 using System;
 using SqlBuilder;
 using Xunit;

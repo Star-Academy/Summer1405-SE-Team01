@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: mohaymen
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - mohaymen-pgdata:/var/lib/postgresql/data
 
@@ -18,7 +18,7 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "Your_strong_Password123"
     ports:
-      - "1433:1433"
+      - "14333:1433"
     volumes:
       - mohaymen-mssqldata:/var/opt/mssql
 

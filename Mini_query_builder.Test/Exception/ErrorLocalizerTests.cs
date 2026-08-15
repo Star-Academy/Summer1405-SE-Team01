@@ -3,6 +3,7 @@ using NSubstitute.ExceptionExtensions;
 using FluentAssertions;
 using System;
 using System.IO;
+using System.Net.Security;
 using SqlBuilder.Exceptions.Abstractions;
 using SqlBuilder.Exceptions.Implementations;
 using Xunit;
@@ -22,6 +23,7 @@ namespace Mini_query_builder.Tests.Exceptions
         [Fact]
         public void GetMessageValue_ShouldReturnKeyWrappedInBrackets_WhenKeyWasNeverLoaded()
         {
+            // Arrange
             // Act
             var result = _sut.GetMessageValue("SomeUnknownKey");
 
@@ -33,7 +35,7 @@ namespace Mini_query_builder.Tests.Exceptions
         public void LoadLanguage_ShouldLeaveMessagesEmpty_WhenFileDoesNotExist()
         {
             // Arrange
-            _fileProvider.Exists(Arg.Any<string>()).Returns(false);
+            _fileProvider.Exists("Exceptions/Json/errors.en.json").Returns(false);
 
             // Act
             _sut.LoadLanguage("en");
@@ -42,21 +44,7 @@ namespace Mini_query_builder.Tests.Exceptions
             _sut.GetMessageValue("Key1").Should().Be("[Key1]");
             _fileProvider.DidNotReceive().ReadAllText(Arg.Any<string>());
         }
-
-        [Fact]
-        public void LoadLanguage_ShouldPopulateMessages_WhenFileContainsValidJson()
-        {
-            // Arrange
-            _fileProvider.Exists(Arg.Any<string>()).Returns(true);
-            _fileProvider.ReadAllText(Arg.Any<string>()).Returns("""{"Key1":"Test Value"}""");
-
-            // Act
-            _sut.LoadLanguage("en");
-
-            // Assert
-            _sut.GetMessageValue("Key1").Should().Be("Test Value");
-        }
-
+        
         [Theory]
         [InlineData("DatabaseTimeout", "The database operation took too long.")]
         [InlineData("ConnectionFailed", "Failed to connect to the database.")]
@@ -74,8 +62,8 @@ namespace Mini_query_builder.Tests.Exceptions
               "EmptyColumnName": "Column names cannot be null or whitespace."
             }
             """;
-            _fileProvider.Exists(Arg.Any<string>()).Returns(true);
-            _fileProvider.ReadAllText(Arg.Any<string>()).Returns(realEnglishJson);
+            _fileProvider.Exists("Exceptions/Json/errors.en.json").Returns(true);
+            _fileProvider.ReadAllText("Exceptions/Json/errors.en.json").Returns(realEnglishJson);
 
             // Act
             _sut.LoadLanguage("en");
@@ -101,8 +89,8 @@ namespace Mini_query_builder.Tests.Exceptions
               "EmptyColumnName": "نام ستون‌ها نمی‌تواند خالی باشد."
             }
             """;
-            _fileProvider.Exists(Arg.Any<string>()).Returns(true);
-            _fileProvider.ReadAllText(Arg.Any<string>()).Returns(realPersianJson);
+            _fileProvider.Exists("Exceptions/Json/errors.fa.json").Returns(true);
+            _fileProvider.ReadAllText("Exceptions/Json/errors.fa.json").Returns(realPersianJson);
 
             // Act
             _sut.LoadLanguage("fa");
@@ -112,15 +100,15 @@ namespace Mini_query_builder.Tests.Exceptions
         }
 
         [Fact]
-        public void LoadLanguage_ShouldClearPreviousMessages_WhenNewFileContainsInvalidJson()
+        public void LoadLanguage_ShouldClearPreviousMessagesFile_WhenNewFileLoads()
         {
             // Arrange
-            _fileProvider.Exists(Arg.Any<string>()).Returns(true);
-            _fileProvider.ReadAllText(Arg.Any<string>()).Returns("""{"Key1":"Value1"}""");
+            _fileProvider.Exists("Exceptions/Json/errors.en.json").Returns(true);
+            _fileProvider.ReadAllText("Exceptions/Json/errors.en.json").Returns("""{"Key1":"Value1"}""");
             _sut.LoadLanguage("en");
-
-            _fileProvider.ReadAllText(Arg.Any<string>()).Returns("this is not valid json");
-
+            
+            _fileProvider.ReadAllText("Exceptions/Json/errors.en.json").Returns("this is not valid json");
+            
             // Act
             _sut.LoadLanguage("en");
 
@@ -132,8 +120,8 @@ namespace Mini_query_builder.Tests.Exceptions
         public void LoadLanguage_ShouldLeaveMessagesEmpty_WhenJsonLiteralIsNull()
         {
             // Arrange
-            _fileProvider.Exists(Arg.Any<string>()).Returns(true);
-            _fileProvider.ReadAllText(Arg.Any<string>()).Returns("null");
+            _fileProvider.Exists("Exceptions/Json/errors.en.json").Returns(true);
+            _fileProvider.ReadAllText("Exceptions/Json/errors.en.json").Returns("null");
 
             // Act
             _sut.LoadLanguage("en");
@@ -146,8 +134,8 @@ namespace Mini_query_builder.Tests.Exceptions
         public void LoadLanguage_ShouldNotThrow_WhenReadAllTextThrowsIOException()
         {
             // Arrange
-            _fileProvider.Exists(Arg.Any<string>()).Returns(true);
-            _fileProvider.ReadAllText(Arg.Any<string>()).Throws(new IOException("disk error"));
+            _fileProvider.Exists("Exceptions/Json/errors.en.json").Returns(true);
+            _fileProvider.ReadAllText("Exceptions/Json/errors.en.json").Throws(new IOException("disk error"));
 
             // Act
             Action act = () => _sut.LoadLanguage("en");
@@ -160,8 +148,8 @@ namespace Mini_query_builder.Tests.Exceptions
         public void LoadLanguage_ShouldNotThrow_WhenReadAllTextThrowsUnauthorizedAccessException()
         {
             // Arrange
-            _fileProvider.Exists(Arg.Any<string>()).Returns(true);
-            _fileProvider.ReadAllText(Arg.Any<string>()).Throws(new UnauthorizedAccessException("access denied"));
+            _fileProvider.Exists("Exceptions/Json/errors.en.json").Returns(true);
+            _fileProvider.ReadAllText("Exceptions/Json/errors.en.json").Throws(new UnauthorizedAccessException("access denied"));
 
             // Act
             Action act = () => _sut.LoadLanguage("en");
@@ -173,17 +161,19 @@ namespace Mini_query_builder.Tests.Exceptions
         [Theory]
         [InlineData("en")]
         [InlineData("fa")]
-        public void LoadLanguage_ShouldRequestPathContainingLanguageCode_WhenCalled(string languageCode)
+        public void LoadLanguage_ShouldRequestPathContainingLanguageCode_Whenever(string languageCode)
         {
             // Arrange
-            _fileProvider.Exists(Arg.Any<string>()).Returns(false);
+            var expectedPath = $"Exceptions/Json/errors.{languageCode}.json";
+            _fileProvider.Exists(expectedPath).Returns(false);
 
             // Act
             _sut.LoadLanguage(languageCode);
 
             // Assert
             _fileProvider.Received(1).Exists(Arg.Is<string>(path =>
-                path.Contains($".{languageCode}.") && path.EndsWith(".json", StringComparison.OrdinalIgnoreCase)));
+                path.Contains($".{languageCode}.") && 
+                path.EndsWith(".json", StringComparison.OrdinalIgnoreCase)));
         }
         
         [Fact]
@@ -210,8 +200,8 @@ namespace Mini_query_builder.Tests.Exceptions
         public void GetMessageValue_ShouldReturnKeyWrappedInBrackets_WhenKeyIsNotInLoadedFile()
         {
             // Arrange
-            _fileProvider.Exists(Arg.Any<string>()).Returns(true);
-            _fileProvider.ReadAllText(Arg.Any<string>()).Returns("""{"Key1":"Value1"}""");
+            _fileProvider.Exists("Exceptions/Json/errors.en.json").Returns(true);
+            _fileProvider.ReadAllText("Exceptions/Json/errors.en.json").Returns("""{"Key1":"Value1"}""");
             _sut.LoadLanguage("en");
 
             // Act
@@ -222,14 +212,14 @@ namespace Mini_query_builder.Tests.Exceptions
         }
 
         [Fact]
-        public void LoadLanguage_ShouldKeepPreviousMessages_WhenReadAllTextThrowsIOException()
+        public void LoadLanguage_ShouldNotCrashAndKeepData_OnSystemError()
         {
             // Arrange
-            _fileProvider.Exists(Arg.Any<string>()).Returns(true);
-            _fileProvider.ReadAllText(Arg.Any<string>()).Returns("""{"Key1":"Value1"}""");
+            _fileProvider.Exists("Exceptions/Json/errors.en.json").Returns(true);
+            _fileProvider.ReadAllText("Exceptions/Json/errors.en.json").Returns("""{"Key1":"Value1"}""");
             _sut.LoadLanguage("en");
 
-            _fileProvider.ReadAllText(Arg.Any<string>()).Throws(new IOException("disk error"));
+            _fileProvider.ReadAllText("Exceptions/Json/errors.en.json").Throws(new IOException("disk error"));
 
             // Act
             Action act = () => _sut.LoadLanguage("en");
