@@ -2868,11 +2868,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01 3\\Summer1405-SE-Team01\\Mini_query_builder.Test\\Mini_query_builder.Test.csproj",
+      "projectUniqueName": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01\\Mini_query_builder.Test\\Mini_query_builder.Test.csproj",
       "projectName": "Mini_query_builder.Test",
-      "projectPath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01 3\\Summer1405-SE-Team01\\Mini_query_builder.Test\\Mini_query_builder.Test.csproj",
+      "projectPath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01\\Mini_query_builder.Test\\Mini_query_builder.Test.csproj",
       "packagesPath": "C:\\Users\\teknik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01 3\\Summer1405-SE-Team01\\Mini_query_builder.Test\\obj\\",
+      "outputPath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01\\Mini_query_builder.Test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2892,8 +2892,8 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01 3\\Summer1405-SE-Team01\\Mini_query_builder\\Mini_query_builder.csproj": {
-              "projectPath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01 3\\Summer1405-SE-Team01\\Mini_query_builder\\Mini_query_builder.csproj"
+            "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01\\Mini_query_builder\\Mini_query_builder.csproj": {
+              "projectPath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01\\Mini_query_builder\\Mini_query_builder.csproj"
             }
           }
         }

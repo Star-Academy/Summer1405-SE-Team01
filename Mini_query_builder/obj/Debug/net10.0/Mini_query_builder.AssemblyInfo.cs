@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Mini_query_builder")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+579f5c61ac726bd0127a4a113e3eb8927d897046")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+581611059bb7fdb7eb7bef446fecf3ce99a58f57")]
 [assembly: System.Reflection.AssemblyProductAttribute("Mini_query_builder")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Mini_query_builder")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

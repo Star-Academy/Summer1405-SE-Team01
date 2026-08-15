@@ -1,5 +1,4 @@
 <Solution>
-  <Project Path="Mini_query_builder.IntegrationTests/Mini_query_builder.IntegrationTests.csproj" />
   <Project Path="Mini_query_builder.Test/Mini_query_builder.Test.csproj" />
   <Project Path="Mini_query_builder/Mini_query_builder.csproj" />
 </Solution>

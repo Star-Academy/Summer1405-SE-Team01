@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "x49Cv3FenGU=",
+  "dgSpecHash": "HzkmQ2E+QdQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01 3\\Summer1405-SE-Team01\\Mini_query_builder.Test\\Mini_query_builder.Test.csproj",
+  "projectFilePath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01\\Mini_query_builder.Test\\Mini_query_builder.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\teknik\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\teknik\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
@@ -64,9 +64,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'SSH.NET' 2025.1.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-q939-rpr3-3284",
-      "projectPath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01 3\\Summer1405-SE-Team01\\Mini_query_builder.Test\\Mini_query_builder.Test.csproj",
+      "projectPath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01\\Mini_query_builder.Test\\Mini_query_builder.Test.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01 3\\Summer1405-SE-Team01\\Mini_query_builder.Test\\Mini_query_builder.Test.csproj",
+      "filePath": "C:\\Users\\teknik\\Desktop\\Summer1405-SE-Team01\\Mini_query_builder.Test\\Mini_query_builder.Test.csproj",
       "libraryId": "SSH.NET",
       "targetGraphs": [
         "net10.0"
